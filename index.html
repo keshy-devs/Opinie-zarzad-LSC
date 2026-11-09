@@ -63,8 +63,8 @@
     <header class="border-b border-lsc-border bg-lsc-dark/80 backdrop-blur-xl sticky top-0 z-50">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-amber-500/25 text-black font-black text-2xl font-heading">
-                    <i class="fa-solid fa-wrench"></i>
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-amber-500/25 text-black font-black text-2xl font-heading overflow-hidden">
+                    <img src="https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&" alt="LSC Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
                     <h1 class="font-heading text-2xl font-extrabold tracking-wide text-white flex items-center gap-2.5">
@@ -85,7 +85,7 @@
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow w-full">
         
         <!-- Info Banner -->
-        <div class="mb-12 bg-gradient-to-br from-lsc-card via-[#121620] to-lsc-dark border border-lsc-border rounded-3xl p-8 sm:p-10 card-glow relative overflow-hidden">
+        <div class="mb-8 bg-gradient-to-br from-lsc-card via-[#121620] to-lsc-dark border border-lsc-border rounded-3xl p-8 sm:p-10 card-glow relative overflow-hidden">
             <div class="absolute -right-16 -bottom-16 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10 max-w-2xl">
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-5 border border-amber-500/20 shadow-inner">
@@ -93,8 +93,63 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie wysłana na Discord w formie zgrabnej, czytelnej wiadomości tekstowej</strong>.
+                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie przesłana na Discord w czytelnej formie</strong>.
                 </p>
+            </div>
+        </div>
+
+        <!-- Rules & Guidelines Section (Two Columns) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            <!-- Regulamin -->
+            <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold text-white">Regulamin Oceniania</h3>
+                    </div>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span><strong>100% Anonimowości:</strong> System nie rejestruje Twojego IP ani danych.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span><strong>Konstruktywizm:</strong> Opieraj opinie na rzeczywistej współpracy.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                            <span><strong>Jedno zgłoszenie:</strong> Oceń cały zarząd w jednym formularzu.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Zakazy i Bezpieczeństwo -->
+            <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <h3 class="font-heading text-xl font-bold text-white">Zakazy i Konsekwencje</h3>
+                    </div>
+                    <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                            <span><strong>Zakaz spamu:</strong> Wysyłanie pustych lub powtarzających się ankiet.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                            <span><strong>Zakaz fake info:</strong> Celowe pisanie kłamств i oszczerstw.</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                            <span><strong>Fałszywe opinie:</strong> Trollowanie skutkuje karami frakcyjnymi.</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -135,8 +190,8 @@
     <footer class="border-t border-lsc-border bg-lsc-dark/90 py-8">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-2.5">
-                <div class="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm">
-                    <i class="fa-solid fa-wrench"></i>
+                <div class="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm overflow-hidden">
+                    <img src="https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&" alt="LSC Logo" class="w-full h-full object-cover">
                 </div>
                 <span class="font-heading font-bold text-slate-300 tracking-wider text-sm">LOS SANTOS CUSTOMS • OSLO RP</span>
             </div>
@@ -273,30 +328,35 @@
         async function submitMasterSurvey(event) {
             event.preventDefault();
 
-            // Budowanie zgrabnej, czystej wiadomości tekstowej (content) z dopasowanym formatowaniem na Discordzie
-            let messageContent = "📋 **NOWA ZBIORCZA ANKIETA O ZARZĄDZIE LSC**\n";
-            messageContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
+            const fieldsArray = [];
 
-            managementMembers.forEach((member, index) => {
+            managementMembers.forEach(member => {
                 const rating = document.getElementById(`rating-${member.id}`).value;
                 const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                messageContent += `\n**${index + 1}. ${member.name}** \`[${member.role}]\`\n`;
-                messageContent += `⭐ Ocena: **${starsDisplay}** (${rating}/5)\n`;
-                messageContent += `👍 **Zalety:** ${pros}\n`;
-                messageContent += `💡 **Uwagi:** ${cons}\n`;
-                messageContent += "──────────────────────────────────────\n";
+                fieldsArray.push({
+                    name: `👤 ${member.name} [${member.role}] — Ocena: ${starsDisplay} (${rating}/5)`,
+                    value: `👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
+                    inline: false
+                });
             });
 
-            messageContent += `\n_🔒 100% Anonimowa ankieta pracownicza • ${new Date().toLocaleString('pl-PL')}_`;
-
-            // Wysyłamy jako czysty content z niestandardową nazwą nadawcy webhooka
             const payload = {
-                username: "LSC • System Ankiet",
-                avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
-                content: messageContent
+                username: "LSC • Panel Zarządu",
+                avatar_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&",
+                embeds: [{
+                    title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
+                    description: `Pracownik przesłał ocenę poszczególnych członków zarządu:`,
+                    color: 10115583, // Fioletowo-bursztynowy akcent pasujący do LSC
+                    fields: fieldsArray,
+                    footer: {
+                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
+                        icon_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
             };
 
             const submitBtn = document.getElementById('submit-btn');
@@ -315,7 +375,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania ankiety na Discord. Sprawdź połączenie.');
+                alert('Wystąpił problem podczas wysyłania ankiety na Discord. Sprawdź połączenie z internetem.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij ankietę zarządu na Discord`;
                 return;
