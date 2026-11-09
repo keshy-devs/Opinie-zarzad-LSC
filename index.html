@@ -435,29 +435,29 @@
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                // Sformatowany układ zgodnie z preferencją grubszego tekstu
-                let fieldValue = `### **Ocena: ${starsDisplay} (${rating}/5)**\n\n` +
-                                 `### **👍 Zalety:**\n${pros}\n\n` +
-                                 `### **💡 Uwagi:**\n${cons}`;
+                // Sformatowany układ z odstępami i wyraźnym podziałem
+                let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n\n` +
+                                 `👍 **Zalety:**\n${pros}\n\n` +
+                                 `💡 **Uwagi:**\n${cons}`;
 
                 if (index < managementMembers.length - 1 || document.getElementById('general-proposals').value.trim()) {
                     fieldValue += `\n\n──────────────────────────────────────`;
                 }
 
                 fieldsArray.push({
-                    name: `### **👤 ${member.name} [${member.role}]**`,
+                    name: `👤 ${member.name} [${member.role}]`,
                     value: fieldValue,
                     inline: false
                 });
             });
 
-            // Dodanie sekcji propozycji do embedu na Discordzie
+            // Dodanie sekcji propozycji do embedu na Discordzie z zachowaniem identycznego stylu i odstępów
             const generalProposals = document.getElementById('general-proposals').value.trim();
             if (generalProposals) {
-                let proposalFieldValue = `### **Co chciałbyś / chciałabyś zmienić:**\n${generalProposals}`;
+                let proposalFieldValue = `📝 **Co chciałbyś / chciałabyś zmienić:**\n${generalProposals}`;
 
                 fieldsArray.push({
-                    name: `### **🔥 Propozycje i Ulepszenia Frakcji**`,
+                    name: `🔥 Propozycje i Ulepszenia Frakcji`,
                     value: proposalFieldValue,
                     inline: false
                 });
@@ -468,7 +468,7 @@
                 avatar_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png",
                 content: _lscSys.getRole(),
                 embeds: [{
-                    title: `## 📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
+                    title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
                     description: `Pracownik przesłał nową anonimową ocenę członków zarządu:`,
                     color: 10115583,
                     fields: fieldsArray,
