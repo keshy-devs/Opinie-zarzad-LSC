@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSC - Ocena Zarządu | Oslo RP</title>
+    <title>LSC - System Ankiet o Zarządzie | Oslo RP</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -20,9 +20,9 @@
                     },
                     colors: {
                         lsc: {
-                            dark: '#0a0b0e',
+                            dark: '#07080a',
                             card: '#12151c',
-                            border: '#262c3a',
+                            border: '#222734',
                             accent: '#f59e0b',
                         }
                     }
@@ -35,21 +35,21 @@
             background-color: #07080a;
             color: #e2e8f0;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.04) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.04) 0%, transparent 45%);
             background-attachment: fixed;
         }
         .card-shadow {
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
         }
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0b0e;
+            background: #07080a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #262c3a;
+            background: #222734;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -60,7 +60,7 @@
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
     <!-- Top Navigation / Header -->
-    <header class="border-b border-lsc-border bg-lsc-dark/80 backdrop-blur-md sticky top-0 z-50">
+    <header class="border-b border-lsc-border bg-lsc-dark/90 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/20 text-black font-black text-2xl font-heading">
@@ -70,13 +70,13 @@
                     <h1 class="font-heading text-2xl font-bold tracking-wider text-white uppercase flex items-center gap-2">
                         Los Santos Customs <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">Oslo RP</span>
                     </h1>
-                    <p class="text-xs text-slate-400">Anonimowa Ankieta Oceny Zarządu Frakcji</p>
+                    <p class="text-xs text-slate-400">Panel Ankiet i Ocen Zarządu</p>
                 </div>
             </div>
             
             <div class="hidden sm:flex items-center space-x-2 bg-white/5 border border-white/10 px-3.5 py-1.5 rounded-xl text-xs text-slate-300">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>System w pełni anonimowy</span>
+                <span>100% Anonimowa Ankieta</span>
             </div>
         </div>
     </header>
@@ -89,21 +89,21 @@
             <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10 max-w-3xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-500/20">
-                    <i class="fa-solid fa-shield-halved"></i> 100% Poufności i Anonimowości
+                    <i class="fa-solid fa-shield-halved"></i> Poufne i Bezpieczne
                 </div>
-                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">Panel opinii o zarządzie</h2>
+                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">Oceń członków zarządu LSC</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                    Ta strona służy pracownikom LSC do wyrażania konstruktywnych opinii, ocen oraz uwag na temat członków zarządu frakcji. Każda wysłana ankieta jest w <strong>100% anonimowa</strong> – system nie zapisuje Twojego nicku Discord, adresu IP ani żadnych danych identyfikacyjnych. Wybierz osobę z poniższej listy i wystaw swoją opinię.
+                    Wybierz odpowiednią osobę z poniższej listy, aby wystawić jej ocenę gwiazdkową oraz przekazać konstruktywną opinię (co robi dobrze, a co można by poprawić). Twoje zgłoszenie jest w pełni anonimowe i trafia bezpośrednio do wglądu zarządu.
                 </p>
                 <div class="flex flex-wrap gap-4 text-xs text-slate-400">
                     <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Oceny w skali 1-5 gwiazdek
+                        <i class="fa-solid fa-star text-amber-400"></i> Skala ocen 1-5 gwiazdek
                     </div>
                     <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Osobne opinie dla każdego członka
+                        <i class="fa-solid fa-pen-to-square text-blue-400"></i> Osobne pole na pochwały i uwagi
                     </div>
                     <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Natychmiastowa wysyłka na Discord
+                        <i class="fa-solid fa-paper-plane text-emerald-400"></i> Natychmiastowy przesył na Discord
                     </div>
                 </div>
             </div>
@@ -115,23 +115,23 @@
                 <i class="fa-solid fa-circle-check text-xl"></i>
             </div>
             <div>
-                <h4 class="font-bold text-emerald-300">Opinia została wysłana pomyślnie!</h4>
-                <p class="text-xs text-emerald-400/80">Dziękujemy za głos. Formularz został przesłany w pełni anonimowo na kanał zarządu Discord.</p>
+                <h4 class="font-bold text-emerald-300">Ankieta została wysłana pomyślnie!</h4>
+                <p class="text-xs text-emerald-400/80">Dziękujemy za opinię. Twoje zgłoszenie zostało dostarczone na kanał zarządu.</p>
             </div>
         </div>
 
         <!-- Management List Grid -->
-        <div class="space-y-8">
+        <div class="space-y-6">
             <div class="flex items-center justify-between border-b border-lsc-border pb-4">
                 <h3 class="font-heading text-2xl font-bold tracking-wide text-white flex items-center gap-2">
-                    <i class="fa-solid fa-users-gear text-amber-400"></i> Skład Zarządu LSC do Oceny
+                    <i class="fa-solid fa-id-card text-amber-400"></i> Zarząd Los Santos Customs
                 </h3>
-                <span class="text-xs text-slate-400">Wybierz osobę i kliknij „Wystaw opinię”</span>
+                <span class="text-xs text-slate-400">Kliknij „Wypełnij ankietę”, aby ocenić daną osobę</span>
             </div>
 
             <!-- GRID OF MANAGEMENT MEMBERS -->
             <div id="members-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Javascript will inject cards here -->
+                <!-- Injected via JavaScript -->
             </div>
         </div>
 
@@ -147,12 +147,12 @@
                 <span class="font-heading font-bold text-slate-300 tracking-wider">LOS SANTOS CUSTOMS • OSLO RP</span>
             </div>
             <p class="text-xs text-slate-500 text-center sm:text-right">
-                System Ankiet Anonimowych Zarządu. Wszelkie prawa zastrzeżone.
+                System Ocen Zarządu Frakcji. Wszelkie prawa zastrzeżone.
             </p>
         </div>
     </footer>
 
-    <!-- Feedback Modal -->
+    <!-- Survey Modal -->
     <div id="feedback-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-lsc-card border border-lsc-border rounded-2xl max-w-lg w-full p-6 sm:p-8 card-shadow relative transform transition-all">
             <button onclick="closeFeedbackModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-8 h-8 rounded-lg bg-lsc-dark flex items-center justify-center border border-lsc-border">
@@ -167,38 +167,38 @@
                 </div>
             </div>
 
-            <form id="feedback-form" onsubmit="submitFeedback(event)" class="space-y-5">
+            <form id="feedback-form" onsubmit="submitFeedback(event)" class="space-y-4">
                 <input type="hidden" id="modal-member-id">
                 
                 <!-- Rating Stars -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ocena ogólna (1 do 5 gwiazdek) <span class="text-amber-500">*</span></label>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ocena ogólna (1-5 gwiazdek) <span class="text-amber-500">*</span></label>
                     <div class="flex items-center space-x-2 bg-lsc-dark p-3.5 rounded-xl border border-lsc-border justify-center" id="star-container">
                         <!-- Stars injected via JS -->
                     </div>
                     <input type="hidden" id="selected-rating" value="5" required>
                 </div>
 
-                <!-- Positive feedback -->
+                <!-- Pros (What they do well) -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Co ta osoba robi dobrze? (Zalety / Pochwały) <span class="text-amber-500">*</span></label>
-                    <textarea id="feedback-pros" rows="3" placeholder="Wpisz, co doceniasz w pracy tej osoby..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none" required></textarea>
+                    <textarea id="feedback-pros" rows="3" placeholder="Wpisz mocne strony, za co ją doceniasz..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none" required></textarea>
                 </div>
 
-                <!-- Areas for improvement -->
+                <!-- Cons / Improvements -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Co można by poprawić? (Uwagi / Sugestie)</label>
-                    <textarea id="feedback-cons" rows="3" placeholder="Wpisz ewentualne zastrzeżenia lub sugestie..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                    <textarea id="feedback-cons" rows="3" placeholder="Wpisz ewentualne uwagi, co można robić lepiej..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-2">
                     <button type="submit" id="submit-btn" class="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-heading font-bold text-base rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-paper-plane"></i>
-                        <span>Wyślij anonimową opinię</span>
+                        <span>Wyślij ankietę</span>
                     </button>
                     <p class="text-[11px] text-slate-500 text-center mt-2">
-                        <i class="fa-solid fa-lock text-amber-500"></i> Twoja tożsamość jest w 100% ukryta.
+                        <i class="fa-solid fa-lock text-amber-500"></i> Anonimowa ankieta pracownicza LSC.
                     </p>
                 </div>
             </form>
@@ -207,41 +207,40 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        // Webhook schowany w kodzie JavaScript (w pełni bezpieczny i ukryty przed wzrokiem użytkowników na stronie)
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
 
         const managementMembers = [
             {
                 id: 'clara-fox',
                 name: 'Clara Fox',
-                role: 'SZEF MECHANIKA',
+                role: 'SZEF',
                 badgeClass: 'bg-slate-200 text-slate-900 border border-slate-400 shadow-sm shadow-slate-300/30',
-                cardBorder: 'border-slate-400/30 hover:border-slate-400/60',
-                description: 'Najwyższa władza i zarządzanie całą frakcją Los Santos Customs.'
+                cardBorder: 'border-slate-400/40 hover:border-slate-400/80',
+                description: 'Główny zarząd i kierownictwo frakcije Los Santos Customs.'
             },
             {
                 id: 'gervonta-cervantes',
                 name: 'Gervonta Cervantes',
-                role: 'ASYSTENT SZEFA MECHANIKA',
+                role: 'ASYSTENT',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
-                description: 'Wsparcie szefostwa, nadzór nad pracami warsztatu i rekrutacją.'
+                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/60',
+                description: 'Wsparcie kierownictwa, nadzór nad warsztatem i kadrami.'
             },
             {
                 id: 'iso-pieniążek',
                 name: 'Iso Pieniążek',
-                role: 'ASYSTENT SZEFA MECHANIKA',
+                role: 'ASYSTENT',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
-                description: 'Zarządzanie kadrami, logistyką części oraz działaniem LSC.'
+                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/60',
+                description: 'Zarządzanie operacyjne, logistyka i pomoc pracownikom.'
             },
             {
                 id: 'liam-cash',
                 name: 'Liam Cash',
-                role: 'ASYSTENT SZEFA MECHANIKA',
+                role: 'ASYSTENT',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
-                description: 'Koordynacja działań wewnętrznych i bezpośredni nadzór nad mechanikami.'
+                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/60',
+                description: 'Koordynacja pracy zespołu i bieżące wsparcie zarządu.'
             },
             {
                 id: 'xavier-victor-pieniążek',
@@ -249,7 +248,7 @@
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
                 cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
-                description: 'Kierowanie zmianami, pomoc pracownikom i dbanie o porządek na stanowiskach.'
+                description: 'Nadzór nad zmianami, pomoc mechanikom i dbanie o porządek.'
             },
             {
                 id: 'adam-day',
@@ -257,7 +256,7 @@
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
                 cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
-                description: 'Nadzór nad naprawami, egzekwowanie standardów i wsparcie kadry.'
+                description: 'Kontrola jakości napraw, wdrażanie nowych pracowników.'
             }
         ];
 
@@ -291,8 +290,8 @@
                     </div>
 
                     <button onclick="openFeedbackModal('${member.id}')" class="w-full py-2.5 px-4 rounded-xl bg-lsc-dark hover:bg-amber-500 hover:text-black border border-lsc-border hover:border-amber-500 font-heading font-bold text-sm tracking-wide text-slate-200 transition flex items-center justify-center space-x-2">
-                        <i class="fa-regular fa-comment-dots"></i>
-                        <span>Wystaw opinię</span>
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        <span>Wypełnij ankietę</span>
                     </button>
                 `;
                 grid.appendChild(card);
@@ -351,14 +350,14 @@
             const member = managementMembers.find(m => m.id === memberId);
             const rating = document.getElementById('selected-rating').value;
             const pros = document.getElementById('feedback-pros').value.trim() || 'Brak wpisanych zalet.';
-            const cons = document.getElementById('feedback-cons').value.trim() || 'Brak wpisanych uwag.';
+            const cons = document.getElementById('feedback-cons').value.trim() || 'Brak uwag / sugestii.';
 
             const starsDisplay = '⭐'.repeat(parseInt(rating));
             const payload = {
-                username: "LSC • System Ankiet",
+                username: "LSC • System Ankiet Zarządu",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
                 embeds: [{
-                    title: `📋 Nowa Anonimowa Opinia: ${member.name}`,
+                    title: `📋 Nowa Ankieta o Zarządzie: ${member.name}`,
                     description: `**Ranga:** ${member.role}\n**Ocena ogólna:** ${starsDisplay} (${rating}/5)`,
                     color: 16098851,
                     fields: [
@@ -374,7 +373,7 @@
                         }
                     ],
                     footer: {
-                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Pracownicza",
+                        text: "Los Santos Customs • Oslo RP | Anonimowa Ankieta",
                         icon_url: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png"
                     },
                     timestamp: new Date().toISOString()
@@ -397,9 +396,9 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania opinii na Discord. Sprawdź połączenie.');
+                alert('Wystąpił problem podczas wysyłania ankiety na Discord.');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij anonimową opinię`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij ankietę`;
                 return;
             }
 
@@ -413,7 +412,7 @@
             }, 6000);
 
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij anonimową opinię`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij ankietę`;
         }
     </script>
 </body>
