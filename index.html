@@ -20,8 +20,12 @@
                     },
                     colors: {
                         lsc: {
-                            dark: '#07090e',
+                            dark: '#0a0b0e',
+                            card: '#12151c',
+                            cardhover: '#181c25',
+                            border: '#262c3a',
                             accent: '#f59e0b',
+                            accenthover: '#d97706',
                         }
                     }
                 }
@@ -30,43 +34,27 @@
     </script>
     <style>
         body {
-            background-color: #07090e;
+            background-color: #07080a;
             color: #e2e8f0;
             background-image: 
-                radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.06) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.8) 0%, #07090e 100%);
+                radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
             background-attachment: fixed;
         }
-        .glass-panel {
-            background: rgba(18, 24, 38, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        .glow-gold {
+            box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.2);
         }
-        .glass-card {
-            background: rgba(15, 22, 36, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+        .card-shadow {
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-        .glass-card:hover {
-            background: rgba(22, 31, 50, 0.65);
-            border-color: rgba(245, 158, 11, 0.25);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px -10px rgba(245, 158, 11, 0.15);
         }
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #07090e;
+            background: #0a0b0e;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1e293b;
+            background: #262c3a;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -77,7 +65,7 @@
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
     <!-- Top Navigation / Header -->
-    <header class="border-b border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
+    <header class="border-b border-lsc-border bg-lsc-dark/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/20 text-black font-black text-2xl font-heading">
@@ -85,10 +73,17 @@
                 </div>
                 <div>
                     <h1 class="font-heading text-2xl font-bold tracking-wider text-white uppercase flex items-center gap-2">
-                        Los Santos Customs <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">Oslo RP</span>
+                        Los Santos Customs <span class="text-xs px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">Oslo RP</span>
                     </h1>
                     <p class="text-xs text-slate-400">Anonimowa Ankieta Oceny Zarządu Frakcji</p>
                 </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button onclick="openConfigModal()" class="flex items-center space-x-2 px-3.5 py-2 rounded-lg bg-lsc-card hover:bg-lsc-border border border-lsc-border text-slate-300 hover:text-white transition text-sm font-medium">
+                    <i class="fa-solid fa-gear text-amber-400"></i>
+                    <span class="hidden sm:inline">Konfiguracja Webhooka</span>
+                </button>
             </div>
         </div>
     </header>
@@ -97,8 +92,8 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
         
         <!-- Info Banner -->
-        <div class="mb-10 glass-panel rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="mb-10 bg-gradient-to-r from-lsc-card to-lsc-dark border border-lsc-border rounded-2xl p-6 sm:p-8 card-shadow relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10 max-w-3xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-500/20">
                     <i class="fa-solid fa-shield-halved"></i> 100% Poufności i Anonimowości
@@ -107,11 +102,22 @@
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                     Ta strona służy pracownikom LSC do wyrażania konstruktywnych opinii, ocen oraz uwag na temat członków zarządu frakcji. Każda wysłana ankieta jest w <strong>100% anonimowa</strong> – system nie zapisuje Twojego nicku Discord, adresu IP ani żadnych danych identyfikacyjnych. Wypełnij formularz szczerze, aby pomóc nam w usprawnieniu działania LSC na Oslo RP.
                 </p>
+                <div class="flex flex-wrap gap-4 text-xs text-slate-400">
+                    <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
+                        <i class="fa-solid fa-check text-emerald-400"></i> Oceny w skali 1-5 gwiazdek
+                    </div>
+                    <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
+                        <i class="fa-solid fa-check text-emerald-400"></i> Osobne opinie dla każdego członka
+                    </div>
+                    <div class="flex items-center gap-2 bg-lsc-dark/60 px-3 py-1.5 rounded-lg border border-lsc-border">
+                        <i class="fa-solid fa-check text-emerald-400"></i> Wysyłka bezpośrednio na kanał Discord
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Success Alert (Hidden by default) -->
-        <div id="success-alert" class="hidden mb-8 bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 p-4 rounded-xl flex items-center space-x-3 shadow-lg">
+        <div id="success-alert" class="hidden mb-8 bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 p-4 rounded-xl flex items-center space-x-3 shadow-lg animate-fade-in">
             <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
                 <i class="fa-solid fa-circle-check text-xl"></i>
             </div>
@@ -123,7 +129,7 @@
 
         <!-- Management List Grid -->
         <div class="space-y-8">
-            <div class="flex items-center justify-between border-b border-white/10 pb-4">
+            <div class="flex items-center justify-between border-b border-lsc-border pb-4">
                 <h3 class="font-heading text-2xl font-bold tracking-wide text-white flex items-center gap-2">
                     <i class="fa-solid fa-users-gear text-amber-400"></i> Skład Zarządu LSC do Oceny
                 </h3>
@@ -139,7 +145,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 bg-black/40 backdrop-blur-xl py-8 mt-20">
+    <footer class="border-t border-lsc-border bg-lsc-dark/80 py-8 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-2">
                 <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm">
@@ -154,9 +160,9 @@
     </footer>
 
     <!-- Feedback Modal -->
-    <div id="feedback-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="glass-panel rounded-2xl max-w-lg w-full p-6 sm:p-8 relative transform transition-all">
-            <button onclick="closeFeedbackModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-8 h-8 rounded-lg bg-black/40 flex items-center justify-center border border-white/10">
+    <div id="feedback-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-lsc-card border border-lsc-border rounded-2xl max-w-lg w-full p-6 sm:p-8 card-shadow relative transform transition-all">
+            <button onclick="closeFeedbackModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-8 h-8 rounded-lg bg-lsc-dark flex items-center justify-center border border-lsc-border">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -174,20 +180,22 @@
                 <!-- Rating Stars -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ocena ogólna (1 do 5 gwiazdek) <span class="text-amber-500">*</span></label>
-                    <div class="flex items-center space-x-2 bg-black/40 p-3 rounded-xl border border-white/10 justify-center" id="star-container"></div>
+                    <div class="flex items-center space-x-2 bg-lsc-dark p-3 rounded-xl border border-lsc-border justify-center" id="star-container">
+                        <!-- Stars injected via JS -->
+                    </div>
                     <input type="hidden" id="selected-rating" value="5" required>
                 </div>
 
                 <!-- Positive feedback -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Co ta osoba robi dobrze? (Zalety / Pochwały)</label>
-                    <textarea id="feedback-pros" rows="3" placeholder="Wpisz, co doceniasz w pracy tej osoby..." class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                    <textarea id="feedback-pros" rows="3" placeholder="Wpisz, co doceniasz w pracy tej osoby..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
                 </div>
 
                 <!-- Areas for improvement -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1.5">Co można by poprawić? (Uwagi / Sugestie)</label>
-                    <textarea id="feedback-cons" rows="3" placeholder="Wpisz ewentualne zastrzeżenia lub sugestie..." class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                    <textarea id="feedback-cons" rows="3" placeholder="Wpisz ewentualne zastrzeżenia lub sugestie..." class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
                 </div>
 
                 <!-- Submit Button -->
@@ -204,10 +212,53 @@
         </div>
     </div>
 
+    <!-- Config Modal (Webhook & Where opinions go) -->
+    <div id="config-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-lsc-card border border-lsc-border rounded-2xl max-w-lg w-full p-6 sm:p-8 card-shadow relative">
+            <button onclick="closeConfigModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-8 h-8 rounded-lg bg-lsc-dark flex items-center justify-center border border-lsc-border">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
+                    <i class="fa-solid fa-gear text-lg"></i>
+                </div>
+                <div>
+                    <h3 class="font-heading text-2xl font-bold text-white">Gdzie trafiają formularze?</h3>
+                    <p class="text-xs text-slate-400">Konfiguracja Discord Webhook</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-sm text-slate-300">
+                <div class="bg-lsc-dark p-4 rounded-xl border border-lsc-border space-y-2">
+                    <h4 class="font-bold text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info"></i> Gdzie wysyłane są formularze?
+                    </h4>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Wypełnione ankiety są przesyłane bezpośrednio na kanał Discord przypisany do poniższego adresu Webhook. Wiadomość pojawia się tam natychmiast po wysłaniu w formie estetycznego embedu zawierającego ocenę oraz komentarze.
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Adres URL Discord Webhook</label>
+                    <input type="text" id="webhook-url-input" class="w-full bg-lsc-dark border border-lsc-border rounded-xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition font-mono">
+                    <p class="text-[11px] text-slate-500 mt-1">Twój webhook jest już wklejony i aktywny w kodzie.</p>
+                </div>
+
+                <div class="flex justify-end space-x-3 pt-2">
+                    <button onclick="closeConfigModal()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition">
+                        Zamknij
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript Application Logic -->
     <script>
-        // Bezpośredni adres Webhook do Discorda
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
+        // Pre-configured Discord Webhook URL
+        const DEFAULT_WEBHOOK_URL = 'https://discord.com/api/webhooks/1569066287278194789/5Hmb2SfaomNSwfQ8gMW1ayD8lrFZcX187wUwFY8lqnQPQ93VTCUgCTTesCiPOSY6Eixd';
+        const WEBHOOK_STORAGE_KEY = 'lsc_feedback_webhook_url';
 
         const managementMembers = [
             {
@@ -215,48 +266,60 @@
                 name: 'Clara Fox',
                 role: 'SZEF MECHANIKA',
                 badgeClass: 'bg-slate-200 text-slate-900 border border-slate-400 shadow-sm shadow-slate-300/30',
-                description: 'Kieruje całokształtem prac frakcji Los Santos Customs, odpowiada za ogólny nadzór, strategię oraz reprezentowanie warsztatu na serwerze.'
+                cardBorder: 'border-slate-400/30 hover:border-slate-400/60',
+                description: 'Najwyższa władza i zarządzanie całą frakcją Los Santos Customs.'
             },
             {
                 id: 'gervonta-cervantes',
                 name: 'Gervonta Cervantes',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
+                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
+                description: 'Wsparcie szefostwa, nadzór nad pracami warsztatu i rekrutacją.'
             },
             {
                 id: 'iso-pieniążek',
                 name: 'Iso Pieniążek',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
+                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
+                description: 'Zarządzanie kadrami, logistyką części oraz działaniem LSC.'
             },
             {
                 id: 'liam-cash',
                 name: 'Liam Cash',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
+                cardBorder: 'border-emerald-500/20 hover:border-emerald-500/40',
+                description: 'Koordynacja działań wewnętrznych i bezpośredni nadzór nad mechanikami.'
             },
             {
                 id: 'xavier-victor-pieniążek',
                 name: 'Xavier Victor Pieniążek',
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
-                description: 'Nadzoruje bieżącą pracę na stanowiskach, wspiera kadrę mechaników podczas zmian i pilnuje standardów obsługi klientów w LSC.'
+                cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
+                description: 'Kierowanie zmianami, pomoc pracownikom i dbanie o porządek na stanowiskach.'
             },
             {
                 id: 'adam-day',
                 name: 'Adam Day',
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
-                description: 'Nadzoruje bieżącą pracę na stanowiskach, wspiera kadrę mechaników podczas zmian i pilnuje standardów obsługi klientów w LSC.'
+                cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
+                description: 'Nadzór nad naprawami, egzekwowanie standardów i wsparcie kadry.'
             }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
             renderMembersGrid();
             renderStars(5);
+            
+            // Set webhook URL if not already stored
+            if (!localStorage.getItem(WEBHOOK_STORAGE_KEY)) {
+                localStorage.setItem(WEBHOOK_STORAGE_KEY, DEFAULT_WEBHOOK_URL);
+            }
+            document.getElementById('webhook-url-input').value = localStorage.getItem(WEBHOOK_STORAGE_KEY);
         });
 
         function renderMembersGrid() {
@@ -265,26 +328,26 @@
 
             managementMembers.forEach(member => {
                 const card = document.createElement('div');
-                card.className = `glass-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden group`;
+                card.className = `bg-lsc-card border ${member.cardBorder} rounded-2xl p-6 card-shadow flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 relative overflow-hidden group`;
                 
                 card.innerHTML = `
-                    <div class="absolute top-0 right-0 w-36 h-36 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition"></div>
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:bg-amber-500/10 transition"></div>
                     <div>
                         <div class="flex items-center justify-between mb-4">
-                            <span class="px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${member.badgeClass}">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${member.badgeClass}">
                                 ${member.role}
                             </span>
-                            <div class="w-10 h-10 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center text-slate-400 group-hover:text-amber-400 transition">
-                                <i class="fa-solid fa-user-shield text-base"></i>
+                            <div class="w-10 h-10 rounded-full bg-lsc-dark border border-lsc-border flex items-center justify-center text-slate-400 group-hover:text-amber-400 transition">
+                                <i class="fa-solid fa-user-shield"></i>
                             </div>
                         </div>
 
                         <h4 class="font-heading text-2xl font-bold text-white mb-2">${member.name}</h4>
-                        <p class="text-xs text-slate-300 mb-6 leading-relaxed">${member.description}</p>
+                        <p class="text-xs text-slate-400 mb-6 leading-relaxed">${member.description}</p>
                     </div>
 
-                    <button onclick="openFeedbackModal('${member.id}')" class="w-full py-3 px-4 rounded-xl bg-black/40 hover:bg-amber-500 hover:text-black border border-white/10 hover:border-amber-500 font-heading font-bold text-sm tracking-wide text-slate-200 transition flex items-center justify-center space-x-2 group-hover:shadow-lg group-hover:shadow-amber-500/20">
-                        <i class="fa-regular fa-comment-dots text-base"></i>
+                    <button onclick="openFeedbackModal('${member.id}')" class="w-full py-2.5 px-4 rounded-xl bg-lsc-dark hover:bg-amber-500 hover:text-black border border-lsc-border hover:border-amber-500 font-heading font-bold text-sm tracking-wide text-slate-200 transition flex items-center justify-center space-x-2">
+                        <i class="fa-regular fa-comment-dots"></i>
                         <span>Wystaw opinię</span>
                     </button>
                 `;
@@ -337,6 +400,18 @@
             modal.classList.remove('flex');
         }
 
+        function openConfigModal() {
+            const modal = document.getElementById('config-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeConfigModal() {
+            const modal = document.getElementById('config-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
         async function submitFeedback(event) {
             event.preventDefault();
 
@@ -346,8 +421,9 @@
             const pros = document.getElementById('feedback-pros').value.trim() || 'Brak wpisanych zalet.';
             const cons = document.getElementById('feedback-cons').value.trim() || 'Brak wpisanych uwag.';
             
+            const webhookUrl = localStorage.getItem(WEBHOOK_STORAGE_KEY) || DEFAULT_WEBHOOK_URL;
+
             const starsDisplay = '⭐'.repeat(parseInt(rating));
-            
             const payload = {
                 username: "LSC • System Ankiet",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
@@ -380,30 +456,34 @@
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie...`;
 
             try {
-                // Bezpośrednie wysyłanie zapytania przez tryb no-cors (idealne dla webhooków Discorda z przeglądarki)
-                await fetch(WEBHOOK_URL, {
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                closeFeedbackModal();
-                const alertBox = document.getElementById('success-alert');
-                alertBox.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-
-                setTimeout(() => {
-                    alertBox.classList.add('hidden');
-                }, 6000);
-
+                if (!response.ok) {
+                    throw new Error('Błąd wysyłania do Discorda');
+                }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania opinii na Discord.');
-            } finally {
+                alert('Wystąpił problem podczas wysyłania opinii na Discord. Sprawdź połączenie.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij anonimową opinię`;
+                return;
             }
+
+            closeFeedbackModal();
+            const alertBox = document.getElementById('success-alert');
+            alertBox.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 6000);
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij anonimową opinię`;
         }
     </script>
 </body>
