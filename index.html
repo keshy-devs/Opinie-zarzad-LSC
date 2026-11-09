@@ -214,7 +214,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic & Security Scripts -->
+    <!-- JavaScript Application Logic & Obfuscated Webhook -->
     <script>
         // Zabezpieczenie przed inspekcją kodu i konsolą
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -229,7 +229,21 @@
             }
         });
 
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
+        // Zaszyfrowany (obfuskacja) adres webhooka oraz konfiguracja
+        const _lscSys = (function() {
+            const _parts = [
+                'https://discord.com',
+                '/api/webhooks',
+                '/1520171733263323146',
+                '/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c'
+            ];
+            const _role = ['<@&', '1143211475637387407', '>'];
+            return {
+                getUrl: () => _parts.join(''),
+                getRole: () => _role.join('')
+            };
+        })();
+
         const COOLDOWN_HOURS = 6; // Blokada na 6 godzin
 
         const managementMembers = [
@@ -374,7 +388,6 @@
         async function submitMasterSurvey(event) {
             event.preventDefault();
 
-            // Walidacja długości tekstów
             let isValid = true;
             managementMembers.forEach(member => {
                 const prosVal = document.getElementById(`pros-${member.id}`).value.trim();
@@ -414,11 +427,11 @@
             const payload = {
                 username: "LSC • Panel Zarządu",
                 avatar_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&",
-                content: "<@&1143211475637387407>", // Automatyczny ping roli zarządu
+                content: _lscSys.getRole(),
                 embeds: [{
                     title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
                     description: `Pracownik przesłał nową anonimową ocenę członków zarządu:`,
-                    color: 10115583, // Fioletowo-bursztynowy akcent LSC
+                    color: 10115583,
                     fields: fieldsArray,
                     footer: {
                         text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
@@ -433,7 +446,7 @@
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie ankiety...`;
 
             try {
-                const response = await fetch(WEBHOOK_URL, {
+                const response = await fetch(_lscSys.getUrl(), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -450,14 +463,12 @@
                 return;
             }
 
-            // Zapisujemy blokadę w localStorage na 6 godzin
             localStorage.setItem('lsc_survey_last_sent', Date.now().toString());
 
             const alertBox = document.getElementById('success-alert');
             alertBox.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Zablokuj przycisk po udanym wysłaniu
             submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Ankieta wysłana pomyślnie`;
 
             setTimeout(() => {
