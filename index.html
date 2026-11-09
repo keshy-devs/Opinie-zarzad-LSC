@@ -103,14 +103,13 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie przesłana na Discord w czytelnej formie</strong>.
+                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Na dole znajdziesz również pole na ogólne propozycje i zmiany we frakcji.
                 </p>
             </div>
         </div>
 
-        <!-- Rules & Guidelines Section (Two Columns) -->
+        <!-- Rules & Guidelines Section -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            <!-- Regulamin -->
             <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
@@ -130,13 +129,12 @@
                         </li>
                         <li class="flex items-start gap-2">
                             <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
-                            <span><strong>Jedno zgłoszenie:</strong> Oceń cały zarząd w jednym formularzu.</span>
+                            <span><strong>Jedno zgłoszenie:</strong> Oceń zarząd i podaj propozycje w jednym formularzu.</span>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Zakazy i Bezpieczeństwo -->
             <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
                 <div>
                     <div class="flex items-center space-x-3 mb-4">
@@ -163,18 +161,18 @@
             </div>
         </div>
 
-        <!-- Success Alert (Hidden by default) -->
+        <!-- Success Alert -->
         <div id="success-alert" class="hidden mb-8 bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl backdrop-blur-md">
             <div class="w-11 h-11 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
                 <i class="fa-solid fa-circle-check text-2xl"></i>
             </div>
             <div>
                 <h4 class="font-bold text-emerald-300 text-base">Ankieta została pomyślnie wysłana!</h4>
-                <p class="text-xs text-emerald-400/90 mt-0.5">Dziękujemy za zaangażowanie. Twoja opinia o całym zarządzie trafiła na kanał Discord.</p>
+                <p class="text-xs text-emerald-400/90 mt-0.5">Dziękujemy za zaangażowanie. Twoja opinia oraz propozycje trafiły na kanał Discord.</p>
             </div>
         </div>
 
-        <!-- Cooldown Alert (Hidden by default) -->
+        <!-- Cooldown Alert -->
         <div id="cooldown-alert" class="hidden mb-8 bg-amber-950/50 border border-amber-500/40 text-amber-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl backdrop-blur-md">
             <div class="w-11 h-11 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0">
                 <i class="fa-solid fa-hourglass-half text-2xl"></i>
@@ -190,6 +188,26 @@
             
             <div id="members-container" class="space-y-6">
                 <!-- Dynamically injected member evaluation blocks -->
+            </div>
+
+            <!-- Additional General Feedback / Red Color Proposals Section -->
+            <div class="bg-lsc-card border border-amber-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-5">
+                <div class="flex items-center space-x-3.5 border-b border-lsc-border pb-4">
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold shadow-inner">
+                        <i class="fa-solid fa-lightbulb text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading text-xl font-bold text-white tracking-wide">Propozycje i Ulepszenia Frakcji</h3>
+                        <p class="text-xs text-slate-400">Co chciałbyś zmienić w LSC / kolorze czerwonym lub co warto ulepszyć?</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Twoje uwagi, pomysły i propozycje zmian (opcjonalnie)
+                    </label>
+                    <textarea id="general-proposals" rows="4" placeholder="Wpisz swoje propozycje ulepszeń, zmiany w kolorze czerwonym lub uwagi ogólne..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
+                </div>
             </div>
 
             <!-- Submit Section -->
@@ -237,13 +255,13 @@
             }
         });
 
-        // Zaszyfrowany (obfuskacja) adres webhooka oraz konfiguracja
+        // Zaszyfrowany (obfuskacja) docelowy adres webhooka oraz konfiguracja
         const _lscSys = (function() {
             const _parts = [
                 'https://discord.com',
                 '/api/webhooks',
-                '/1520171733263323146',
-                '/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c'
+                '/1569440172490100798',
+                '/P3L6RckDthJjJmWV025FkO5QD2yNVZRWCNjCAdhrgPUEbtZBCdGgX1N7GEqdFyd5yuhK'
             ];
             const _role = ['<@&', '1143211475637387407', '>'];
             return {
@@ -252,7 +270,7 @@
             };
         })();
 
-        const COOLDOWN_HOURS = 6; // Blokada na 6 godzin
+        const COOLDOWN_HOURS = 12; // Zmieniono blokadę na 12 godzin
 
         const managementMembers = [
             {
@@ -417,9 +435,10 @@
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n` +
-                                 `👍 **Zalety:** ${pros}\n` +
-                                 `💡 **Uwagi:** ${cons}`;
+                // Sformatowany układ z odstępami i wyraźnym podziałem (analogicznie do wskazanego wzorca)
+                let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n\n` +
+                                 `👍 **Zalety:**\n${pros}\n\n` +
+                                 `💡 **Uwagi:**\n${cons}`;
 
                 if (index < managementMembers.length - 1) {
                     fieldValue += `\n\n──────────────────────────────────────`;
@@ -431,6 +450,16 @@
                     inline: false
                 });
             });
+
+            // Dodanie sekcji propozycji do embedu na Discordzie, jeśli użytkownik coś wpisał
+            const generalProposals = document.getElementById('general-proposals').value.trim();
+            if (generalProposals) {
+                fieldsArray.push({
+                    name: `💡 Ogólne Propozycje / Zmiany we Frakcji`,
+                    value: `📝 **Treść propozycji:**\n${generalProposals}`,
+                    inline: false
+                });
+            }
 
             const payload = {
                 username: "LSC • Panel Zarządu",
