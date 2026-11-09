@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LSC - Zbiorcza Ankieta o Zarządzie | Oslo RP</title>
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
     <!-- Google Fonts: Rajdhani & Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap)" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -93,7 +93,7 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">Oceń cały zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-4">
-                    Poniżej znajdziesz listę wszystkich członków zarządu LSC. Możesz ocenić każdą osobę, wpisać jej zalety oraz ewentualne uwagi. Po kliknięciu przycisku na dole, <strong>wszystkie opinie zostaną wysłane jednocześnie w jednej wiadomości</strong> na Discord.
+                    Poniżej znajdziesz listę wszystkich członków zarządu LSC. Możesz ocenić każdą osobę, wpisać jej zalety oraz ewentualne uwagi. Po kliknięciu przycisku na dole, <strong>wszystkie opinie zostaną wysłane jednocześnie w jednej przejrzystej wiadomości</strong> na Discord.
                 </p>
             </div>
         </div>
@@ -105,7 +105,7 @@
             </div>
             <div>
                 <h4 class="font-bold text-emerald-300">Zbiorcza ankieta została wysłana pomyślnie!</h4>
-                <p class="text-xs text-emerald-400/80">Dziękujemy. Twoje oceny i opinie o całym zarządzie trafiły na Discord w jednej wiadomości.</p>
+                <p class="text-xs text-emerald-400/80">Dziękujemy. Twoje oceny i opinie o całym zarządzie trafiły na Discord w formie czytelnego raportu.</p>
             </div>
         </div>
 
@@ -120,7 +120,7 @@
             <div class="pt-4 pb-12">
                 <button type="submit" id="submit-btn" class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-heading font-bold text-lg rounded-2xl transition shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-3">
                     <i class="fa-solid fa-paper-plane"></i>
-                    <span>Wyślij wszystkie opinie w jednej wiadomości</span>
+                    <span>Wyślij raport na Discord</span>
                 </button>
                 <p class="text-xs text-slate-500 text-center mt-3">
                     <i class="fa-solid fa-lock text-amber-500"></i> Formularz w 100% anonimowy. Żadne dane identyfikacyjne nie są zapisywane.
@@ -148,7 +148,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
+        const WEBHOOK_URL = '[https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c](https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c)';
 
         const managementMembers = [
             {
@@ -273,40 +273,33 @@
         async function submitMasterSurvey(event) {
             event.preventDefault();
 
-            const fieldsArray = [];
+            let reportText = "========================================\n";
+            reportText += "     RAPORT: OCENA ZARZĄDU LSC\n";
+            reportText += "========================================\n\n";
 
-            managementMembers.forEach(member => {
+            managementMembers.forEach((member, index) => {
                 const rating = document.getElementById(`rating-${member.id}`).value;
                 const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                fieldsArray.push({
-                    name: `👤 ${member.name} [${member.role}] - Ocena: ${starsDisplay} (${rating}/5)`,
-                    value: `👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
-                    inline: false
-                });
+                reportText += `[${index + 1}] ${member.name} (${member.role})\n`;
+                reportText += `• Ocena ogólna: ${starsDisplay} (${rating}/5)\n`;
+                reportText += `• Zalety: ${pros}\n`;
+                reportText += `• Uwagi: ${cons}\n`;
+                reportText += "----------------------------------------\n";
             });
 
+            reportText += `Data sporządzenia raportu: ${new Date().toLocaleString('pl-PL')}`;
+
+            // Wysyłamy czysty, sformatowany blok tekstowy przypominający dokument Microsoft Docs
             const payload = {
-                username: "LSC • System Zbiorczych Ankiet",
-                avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
-                embeds: [{
-                    title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
-                    description: `Pracownik wypełnił opinię o wszystkich członkach zarządu w jednym zgłoszeniu:`,
-                    color: 16098851,
-                    fields: fieldsArray,
-                    footer: {
-                        text: "Los Santos Customs • Oslo RP | Anonimowa Ankieta Zbiorcza",
-                        icon_url: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png"
-                    },
-                    timestamp: new Date().toISOString()
-                }]
+                content: "```text\n" + reportText + "\n```"
             };
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie wszystkich opinii...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generowanie raportu...`;
 
             try {
                 const response = await fetch(WEBHOOK_URL, {
@@ -320,9 +313,9 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania ankiety na Discord.');
+                alert('Wystąpił problem podczas wysyłania raportu na Discord.');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij wszystkie opinie w jednej wiadomości`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij raport na Discord`;
                 return;
             }
 
@@ -343,7 +336,7 @@
             }, 6000);
 
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij wszystkie opinie w jednej wiadomości`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij raport na Discord`;
         }
     </script>
 </body>
