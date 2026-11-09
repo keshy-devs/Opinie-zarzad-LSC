@@ -90,13 +90,6 @@
                     <p class="text-xs text-slate-400">Anonimowa Ankieta Oceny Zarządu Frakcji</p>
                 </div>
             </div>
-            
-            <div class="flex items-center space-x-3">
-                <button onclick="openConfigModal()" class="flex items-center space-x-2 px-3.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition text-sm font-medium backdrop-blur-md">
-                    <i class="fa-solid fa-gear text-amber-400"></i>
-                    <span class="hidden sm:inline">Info o Webhooku</span>
-                </button>
-            </div>
         </div>
     </header>
 
@@ -114,17 +107,6 @@
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                     Ta strona służy pracownikom LSC do wyrażania konstruktywnych opinii, ocen oraz uwag na temat członków zarządu frakcji. Każda wysłana ankieta jest w <strong>100% anonimowa</strong> – system nie zapisuje Twojego nicku Discord, adresu IP ani żadnych danych identyfikacyjnych. Wypełnij formularz szczerze, aby pomóc nam w usprawnieniu działania LSC na Oslo RP.
                 </p>
-                <div class="flex flex-wrap gap-4 text-xs text-slate-300">
-                    <div class="flex items-center gap-2 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Oceny w skali 1-5 gwiazdek
-                    </div>
-                    <div class="flex items-center gap-2 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Osobne opinie dla każdego członka
-                    </div>
-                    <div class="flex items-center gap-2 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Wysyłka bezpośrednio na kanał Discord
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -192,9 +174,7 @@
                 <!-- Rating Stars -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ocena ogólna (1 do 5 gwiazdek) <span class="text-amber-500">*</span></label>
-                    <div class="flex items-center space-x-2 bg-black/40 p-3 rounded-xl border border-white/10 justify-center" id="star-container">
-                        <!-- Stars injected via JS -->
-                    </div>
+                    <div class="flex items-center space-x-2 bg-black/40 p-3 rounded-xl border border-white/10 justify-center" id="star-container"></div>
                     <input type="hidden" id="selected-rating" value="5" required>
                 </div>
 
@@ -224,47 +204,10 @@
         </div>
     </div>
 
-    <!-- Config Modal (Webhook Info) -->
-    <div id="config-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
-        <div class="glass-panel rounded-2xl max-w-lg w-full p-6 sm:p-8 relative">
-            <button onclick="closeConfigModal()" class="absolute top-5 right-5 text-slate-400 hover:text-white transition w-8 h-8 rounded-lg bg-black/40 flex items-center justify-center border border-white/10">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <div class="flex items-center space-x-3 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
-                    <i class="fa-solid fa-circle-info text-lg"></i>
-                </div>
-                <div>
-                    <h3 class="font-heading text-2xl font-bold text-white">Gdzie trafiają formularze?</h3>
-                    <p class="text-xs text-slate-400">Informacje o systemie przesyłania</p>
-                </div>
-            </div>
-
-            <div class="space-y-4 text-sm text-slate-300">
-                <div class="bg-black/40 p-4 rounded-xl border border-white/10 space-y-2">
-                    <h4 class="font-bold text-amber-400 flex items-center gap-2">
-                        <i class="fa-solid fa-shield-halved"></i> Automatyczna wysyłka na Discord
-                    </h4>
-                    <p class="text-xs text-slate-300 leading-relaxed">
-                        Wypełnione ankiety są przesyłane bezpośrednio na skonfigurowany kanał zarządu LSC na Discordzie za pomocą bezpiecznego webhooka wbudowanego w kod. Wiadomość pojawia się tam natychmiast w formie estetycznego embedu.
-                    </p>
-                </div>
-
-                <div class="flex justify-end pt-2">
-                    <button onclick="closeConfigModal()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-black font-bold text-sm transition">
-                        Zamknij
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- JavaScript Application Logic -->
     <script>
-        // Zakodowany Twój webhook w Base64
-        const encodedWebhook = "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTU2OTA2NjI4NzI3ODE5NDc4OS81SG1iMlNmYW9tTlN3ZjhnTVcxYXlEOGxyRlpDWDE4N3dVd0ZZOGxxTlBROTNWVENTVWdDVFRlc0NpUE9TWTZFaXhk";
-        const getWebhookUrl = () => atob(encodedWebhook);
+        // Bezpośredni adres Webhook do Discorda
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
 
         const managementMembers = [
             {
@@ -272,7 +215,6 @@
                 name: 'Clara Fox',
                 role: 'SZEF MECHANIKA',
                 badgeClass: 'bg-slate-200 text-slate-900 border border-slate-400 shadow-sm shadow-slate-300/30',
-                cardBorder: 'border-slate-400/40 hover:border-slate-300',
                 description: 'Kieruje całokształtem prac frakcji Los Santos Customs, odpowiada za ogólny nadzór, strategię oraz reprezentowanie warsztatu na serwerze.'
             },
             {
@@ -280,7 +222,6 @@
                 name: 'Gervonta Cervantes',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/50',
                 description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
             },
             {
@@ -288,7 +229,6 @@
                 name: 'Iso Pieniążek',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/50',
                 description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
             },
             {
@@ -296,7 +236,6 @@
                 name: 'Liam Cash',
                 role: 'ASYSTENT SZEFA MECHANIKA',
                 badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm shadow-emerald-500/20',
-                cardBorder: 'border-emerald-500/30 hover:border-emerald-500/50',
                 description: 'Część kadry zarządzającej odpowiedzialna za koordynację działań warsztatu, pomoc pracownikom i dbanie o płynność napraw oraz porządek.'
             },
             {
@@ -304,7 +243,6 @@
                 name: 'Xavier Victor Pieniążek',
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
-                cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
                 description: 'Nadzoruje bieżącą pracę na stanowiskach, wspiera kadrę mechaników podczas zmian i pilnuje standardów obsługi klientów w LSC.'
             },
             {
@@ -312,7 +250,6 @@
                 name: 'Adam Day',
                 role: 'KIEROWNIK',
                 badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm shadow-blue-500/20',
-                cardBorder: 'border-blue-500/30 hover:border-blue-500/60',
                 description: 'Nadzoruje bieżącą pracę na stanowiskach, wspiera kadrę mechaników podczas zmian i pilnuje standardów obsługi klientów w LSC.'
             }
         ];
@@ -400,18 +337,6 @@
             modal.classList.remove('flex');
         }
 
-        function openConfigModal() {
-            const modal = document.getElementById('config-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        function closeConfigModal() {
-            const modal = document.getElementById('config-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
         async function submitFeedback(event) {
             event.preventDefault();
 
@@ -421,9 +346,8 @@
             const pros = document.getElementById('feedback-pros').value.trim() || 'Brak wpisanych zalet.';
             const cons = document.getElementById('feedback-cons').value.trim() || 'Brak wpisanych uwag.';
             
-            const webhookUrl = getWebhookUrl();
-
             const starsDisplay = '⭐'.repeat(parseInt(rating));
+            
             const payload = {
                 username: "LSC • System Ankiet",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
@@ -456,8 +380,8 @@
             submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie...`;
 
             try {
-                // Bezpośrednie wysyłanie w trybie no-cors – gwarantuje dostarczenie wiadomości na kanał Discord z GitHub Pages
-                await fetch(webhookUrl, {
+                // Bezpośrednie wysyłanie zapytania przez tryb no-cors (idealne dla webhooków Discorda z przeglądarki)
+                await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
