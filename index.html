@@ -190,11 +190,11 @@
                 <!-- Dynamically injected member evaluation blocks -->
             </div>
 
-            <!-- Additional General Feedback Section -->
-            <div class="bg-lsc-card border border-amber-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-5">
+            <!-- Additional General Feedback Section (Red Vibe Style) -->
+            <div class="bg-lsc-card border border-rose-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-5">
                 <div class="flex items-center space-x-3.5 border-b border-lsc-border pb-4">
-                    <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold shadow-inner">
-                        <i class="fa-solid fa-lightbulb text-lg"></i>
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold shadow-inner">
+                        <i class="fa-solid fa-fire text-lg"></i>
                     </div>
                     <div>
                         <h3 class="font-heading text-xl font-bold text-white tracking-wide">Propozycje i Ulepszenia Frakcji</h3>
@@ -204,9 +204,9 @@
 
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Twoje propozycje zmian, pomysły lub uwagi (opcjonalnie)
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Twoje propozycje zmian, pomysły lub uwagi (opcjonalnie)
                     </label>
-                    <textarea id="general-proposals" rows="4" placeholder="Wpisz, co chciałbyś / chciałabyś zmienić w LSC lub jakie masz pomysły na ulepszenie frakcji..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
+                    <textarea id="general-proposals" rows="4" placeholder="Wpisz, co chciałbyś / chciałabyś zmienić w LSC lub jakie masz pomysły na ulepszenie frakcji..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition resize-none"></textarea>
                 </div>
             </div>
 
@@ -440,7 +440,7 @@
                                  `👍 **Zalety:**\n${pros}\n\n` +
                                  `💡 **Uwagi:**\n${cons}`;
 
-                if (index < managementMembers.length - 1) {
+                if (index < managementMembers.length - 1 || document.getElementById('general-proposals').value.trim()) {
                     fieldValue += `\n\n──────────────────────────────────────`;
                 }
 
@@ -451,12 +451,14 @@
                 });
             });
 
-            // Dodanie sekcji propozycji do embedu na Discordzie, jeśli użytkownik coś wpisał
+            // Dodanie sekcji propozycji do embedu na Discordzie z zachowaniem identycznego stylu i odstępów
             const generalProposals = document.getElementById('general-proposals').value.trim();
             if (generalProposals) {
+                let proposalFieldValue = `📝 **Co chciałbyś / chciałabyś zmienić:**\n${generalProposals}`;
+
                 fieldsArray.push({
-                    name: `💡 Propozycje i Ulepszenia Frakcji`,
-                    value: `📝 **Co chciałbyś / chciałabyś zmienić:**\n${generalProposals}`,
+                    name: `🔥 Propozycje i Ulepszenia Frakcji`,
+                    value: proposalFieldValue,
                     inline: false
                 });
             }
