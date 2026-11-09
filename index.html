@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSC - Zbiorcza Ankieta Zarządu | Oslo RP</title>
+    <title>LSC - Panel Oceny Zarządu | Oslo RP</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -18,45 +18,48 @@
                         sans: ['Inter', 'sans-serif'],
                         heading: ['Rajdhani', 'sans-serif'],
                     },
-                    colors: {
-                        lsc: {
-                            dark: '#07090e',
-                            accent: '#f59e0b',
-                        }
-                    }
                 }
             }
         }
     </script>
     <style>
         body {
-            background-color: #07090e;
+            background-color: #05070a;
             color: #e2e8f0;
             background-image: 
-                radial-gradient(circle at 20% 20%, rgba(245, 158, 11, 0.06) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.8) 0%, #07090e 100%);
+                radial-gradient(circle at 15% 15%, rgba(245, 158, 11, 0.08) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 45%);
             background-attachment: fixed;
         }
-        .glass-panel {
-            background: rgba(18, 24, 38, 0.65);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+        .form-card {
+            background: rgba(13, 18, 28, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
-        .glass-card {
-            background: rgba(15, 22, 36, 0.5);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+        .member-box {
+            background: rgba(20, 27, 42, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        .member-box:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+            background: rgba(24, 32, 50, 0.8);
+        }
+        textarea, input {
+            background: rgba(8, 12, 19, 0.8) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: #ffffff !important;
+        }
+        textarea:focus, input:focus {
+            border-color: #f59e0b !important;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.15);
         }
         ::-webkit-scrollbar {
             width: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #07090e;
+            background: #05070a;
         }
         ::-webkit-scrollbar-thumb {
             background: #1e293b;
@@ -69,214 +72,204 @@
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-black">
 
-    <!-- Top Navigation / Header -->
-    <header class="border-b border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <!-- Header -->
+    <header class="border-b border-white/5 bg-black/60 backdrop-blur-xl sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/20 text-black font-black text-2xl font-heading">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center shadow-lg shadow-amber-500/20 text-black font-black text-2xl font-heading">
                     <i class="fa-solid fa-wrench"></i>
                 </div>
                 <div>
-                    <h1 class="font-heading text-2xl font-bold tracking-wider text-white uppercase flex items-center gap-2">
+                    <h1 class="font-heading text-xl sm:text-2xl font-bold tracking-wider text-white uppercase flex items-center gap-2">
                         Los Santos Customs <span class="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">Oslo RP</span>
                     </h1>
-                    <p class="text-xs text-slate-400">Zbiorcza Anonimowa Ankieta Zarządu</p>
+                    <p class="text-xs text-slate-400">Panel Oceny Kadry Zarządzającej</p>
                 </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 text-xs bg-emerald-500/10 text-emerald-400 px-3 py-1.5 rounded-xl border border-emerald-500/20">
+                <i class="fa-solid fa-shield-halved"></i> 100% Anonimowo
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 py-10 flex-grow w-full">
         
-        <!-- Info Banner -->
-        <div class="mb-10 glass-panel rounded-2xl p-6 sm:p-8 relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Welcome Banner -->
+        <div class="form-card rounded-3xl p-6 sm:p-10 mb-8 relative overflow-hidden">
+            <div class="absolute -right-12 -bottom-12 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-500/20">
-                    <i class="fa-solid fa-shield-halved"></i> 100% Poufności i Anonimowości
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">Ocena całego zarządu LSC</h2>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-                    W poniższym formularzu możesz wyrazić swoją opinię o każdym członku zarządu Los Santos Customs. Oceń ich pracę, wskaź zalety oraz ewentualne obszary do poprawy. Całość zostanie przesłana jako jedno zbiorcze zgłoszenie bezpośrednio na kanał zarządu na Discordzie.
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-500/20">
+                    <i class="fa-regular fa-file-lines"></i> Oficjalna Ankieta Frakcyjna
+                </span>
+                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3">Oceń Zarząd Los Santos Customs</h2>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Wypełnij poniższy formularz, aby przekazać swoją opinię o poszczególnych członkach zarządu. Twoje zgłoszenie jest całkowicie anonimowe i pomoże w usprawnieniu działania naszego warsztatu.
                 </p>
-                <div class="flex flex-wrap gap-4 text-xs text-slate-300">
-                    <div class="flex items-center gap-2 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Ocena wszystkich członków w jednym formularzu
-                    </div>
-                    <div class="flex items-center gap-2 bg-black/30 px-3.5 py-2 rounded-xl border border-white/5">
-                        <i class="fa-solid fa-check text-emerald-400"></i> Skala 1-5 gwiazdek dla każdego
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Success Alert (Hidden by default) -->
-        <div id="success-alert" class="hidden mb-8 bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 p-4 rounded-xl flex items-center space-x-3 shadow-lg">
-            <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
-                <i class="fa-solid fa-circle-check text-xl"></i>
+        <!-- Success Alert -->
+        <div id="success-alert" class="hidden mb-8 bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-2xl flex-shrink-0">
+                <i class="fa-solid fa-circle-check"></i>
             </div>
             <div>
-                <h4 class="font-bold text-emerald-300">Zbiorcza opinia została wysłana pomyślnie!</h4>
-                <p class="text-xs text-emerald-400/80">Dziękujemy za wypełnienie ankiety. Formularz trafił na kanał Discord.</p>
+                <h4 class="font-bold text-emerald-300 text-lg">Ankieta została pomyślnie wysłana!</h4>
+                <p class="text-xs sm:text-sm text-emerald-400/80">Dziękujemy za poświęcony czas. Twoje opinie zostały przekazane na kanał zarządu.</p>
             </div>
         </div>
 
-        <!-- Main Feedback Form -->
-        <form id="collective-form" onsubmit="submitCollectiveFeedback(event)" class="space-y-8">
+        <!-- Form Start -->
+        <form id="main-survey-form" onsubmit="sendSurvey(event)" class="space-y-6">
             
-            <!-- Dynamic Sections for Each Member -->
-            <div id="members-container" class="space-y-6">
+            <!-- Dynamic Member Cards Container -->
+            <div id="members-list" class="space-y-6">
                 <!-- Injected via JavaScript -->
             </div>
 
-            <!-- Submit Button Container -->
+            <!-- Submit Button -->
             <div class="pt-4">
-                <button type="submit" id="submit-btn" class="w-full py-4 px-6 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-heading font-bold text-lg rounded-xl transition shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Wyślij zbiorczą ankietę zarządu</span>
+                <button type="submit" id="submit-btn" class="w-full py-4 px-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-black font-heading font-bold text-lg rounded-2xl transition shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-3">
+                    <i class="fa-solid fa-paper-plane text-base"></i>
+                    <span>Wyślij kompletne opinie o zarządzie</span>
                 </button>
-                <p class="text-xs text-slate-500 text-center mt-3">
-                    <i class="fa-solid fa-lock text-amber-500"></i> Formularz w pełni anonimowy.
-                </p>
             </div>
+
         </form>
 
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 bg-black/40 backdrop-blur-xl py-8 mt-20">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer class="border-t border-white/5 bg-black/60 backdrop-blur-xl py-8 mt-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
             <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-sm">
+                <div class="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center text-amber-400 font-bold text-xs">
                     <i class="fa-solid fa-wrench"></i>
                 </div>
-                <span class="font-heading font-bold text-slate-300 tracking-wider">LOS SANTOS CUSTOMS • OSLO RP</span>
+                <span class="font-heading font-bold text-slate-300 text-sm tracking-wider">LOS SANTOS CUSTOMS • OSLO RP</span>
             </div>
-            <p class="text-xs text-slate-500 text-center sm:text-right">
-                System Ankiet Anonimowych Zarządu. Wszelkie prawa zastrzeżone.
+            <p class="text-xs text-slate-500">
+                Wszystkie prawa zastrzeżone. Panel wewnętrzny frakcji.
             </p>
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic -->
+    <!-- Script Logic -->
     <script>
         // Webhook schowany w kodzie (niewidoczny na stronie)
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
 
-        const managementMembers = [
-            { id: 'clara-fox', name: 'Clara Fox', role: 'SZEF MECHANIKA', badgeClass: 'bg-slate-200 text-slate-900 border border-slate-400' },
-            { id: 'gervonta-cervantes', name: 'Gervonta Cervantes', role: 'ASYSTENT SZEFA MECHANIKA', badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' },
-            { id: 'iso-pieniążek', name: 'Iso Pieniążek', role: 'ASYSTENT SZEFA MECHANIKA', badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' },
-            { id: 'liam-cash', name: 'Liam Cash', role: 'ASYSTENT SZEFA MECHANIKA', badgeClass: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40' },
-            { id: 'xavier-victor-pieniążek', name: 'Xavier Victor Pieniążek', role: 'KIEROWNIK', badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40' },
-            { id: 'adam-day', name: 'Adam Day', role: 'KIEROWNIK', badgeClass: 'bg-blue-500/20 text-blue-300 border border-blue-500/40' }
+        const managementTeam = [
+            { id: 'clara', name: 'Clara Fox', role: 'SZEF MECHANIKA', badge: 'bg-slate-200 text-slate-900' },
+            { id: 'gervonta', name: 'Gervonta Cervantes', role: 'ASYSTENT SZEFA', badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
+            { id: 'iso', name: 'Iso Pieniążek', role: 'ASYSTENT SZEFA', badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
+            { id: 'liam', name: 'Liam Cash', role: 'ASYSTENT SZEFA', badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' },
+            { id: 'xavier', name: 'Xavier Victor Pieniążek', role: 'KIEROWNIK', badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/30' },
+            { id: 'adam', name: 'Adam Day', role: 'KIEROWNIK', badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/30' }
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderFormSections();
+            renderForm();
         });
 
-        function renderFormSections() {
-            const container = document.getElementById('members-container');
+        function renderForm() {
+            const container = document.getElementById('members-list');
             container.innerHTML = '';
 
-            managementMembers.forEach((member, index) => {
+            managementTeam.forEach((person, index) => {
                 const card = document.createElement('div');
-                card.className = `glass-card rounded-2xl p-6 sm:p-8 space-y-6`;
+                card.className = 'member-box rounded-3xl p-6 sm:p-8 space-y-6';
                 card.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-heading font-bold text-lg">
-                                #${index + 1}
-                            </div>
+                            <span class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-heading font-bold text-lg">
+                                0${index + 1}
+                            </span>
                             <div>
-                                <h3 class="font-heading text-2xl font-bold text-white">${member.name}</h3>
-                                <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ${member.badgeClass} mt-1">
-                                    ${member.role}
+                                <h3 class="font-heading text-2xl font-bold text-white">${person.name}</h3>
+                                <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider ${person.badge} mt-1">
+                                    ${person.role}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <!-- Rating -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <!-- Rating Stars -->
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Ocena ogólna <span class="text-amber-500">*</span></label>
-                            <div class="flex items-center space-x-2 bg-black/40 p-3 rounded-xl border border-white/10 justify-center h-[52px]" id="stars-${member.id}">
-                                <!-- Stars injected here -->
-                            </div>
-                            <input type="hidden" id="rating-${member.id}" value="5" required>
+                            <div class="flex items-center space-x-2 bg-black/40 p-3.5 rounded-2xl border border-white/10 justify-center h-[56px]" id="stars-${person.id}"></div>
+                            <input type="hidden" id="rating-${person.id}" value="5" required>
                         </div>
 
                         <!-- Pros -->
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Zalety / Co robi dobrze</label>
-                            <input type="text" id="pros-${member.id}" placeholder="Np. świetny kontakt, pomoc..." class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition h-[52px]">
+                            <textarea id="pros-${person.id}" rows="2" placeholder="Wpisz mocne strony..." class="w-full rounded-2xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none transition resize-none h-[56px]"></textarea>
                         </div>
 
                         <!-- Cons -->
                         <div>
                             <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Uwagi / Do poprawy</label>
-                            <input type="text" id="cons-${member.id}" placeholder="Np. rzadziej dostępny..." class="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition h-[52px]">
+                            <textarea id="cons-${person.id}" rows="2" placeholder="Wpisz ewentualne uwagi..." class="w-full rounded-2xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none transition resize-none h-[56px]"></textarea>
                         </div>
                     </div>
                 `;
                 container.appendChild(card);
-                renderMemberStars(member.id, 5);
+                setMemberStars(person.id, 5);
             });
         }
 
-        function renderMemberStars(memberId, rating) {
-            const container = document.getElementById(`stars-${memberId}`);
-            container.innerHTML = '';
-            
+        function setMemberStars(personId, currentRating) {
+            const starsContainer = document.getElementById(`stars-${personId}`);
+            starsContainer.innerHTML = '';
+
             for (let i = 1; i <= 5; i++) {
-                const star = document.createElement('button');
-                star.type = 'button';
-                star.className = `text-xl transition focus:outline-none ${i <= rating ? 'text-amber-400 drop-shadow-[0_0_6px_rgba(245,158,11,0.5)]' : 'text-slate-600'}`;
-                star.innerHTML = `<i class="fa-solid fa-star"></i>`;
-                star.onclick = () => {
-                    document.getElementById(`rating-${memberId}`).value = i;
-                    renderMemberStars(memberId, i);
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = `text-xl transition focus:outline-none ${i <= currentRating ? 'text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.6)]' : 'text-slate-600'}`;
+                btn.innerHTML = `<i class="fa-solid fa-star"></i>`;
+                btn.onclick = () => {
+                    document.getElementById(`rating-${personId}`).value = i;
+                    setMemberStars(personId, i);
                 };
-                container.appendChild(star);
+                starsContainer.appendChild(btn);
             }
         }
 
-        async function submitCollectiveFeedback(event) {
+        async function sendSurvey(event) {
             event.preventDefault();
 
-            const submitBtn = document.getElementById('submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie zbiorczej ankiety...`;
+            const btn = document.getElementById('submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie opinii na Discord...`;
 
-            // Budowanie pól do wiadomości embed na Discordzie
-            const fields = [];
+            const embedFields = [];
 
-            managementMembers.forEach(member => {
-                const rating = document.getElementById(`rating-${member.id}`).value;
-                const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
-                const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
+            managementTeam.forEach(person => {
+                const rating = document.getElementById(`rating-${person.id}`).value;
+                const pros = document.getElementById(`pros-${person.id}`).value.trim() || 'Brak wpisanych zalet.';
+                const cons = document.getElementById(`cons-${person.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                fields.push({
-                    name: `👤 ${member.name} (${member.role})`,
+                embedFields.push({
+                    name: `👤 ${person.name} (${person.role})`,
                     value: `**Ocena:** ${starsDisplay} (${rating}/5)\n👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
                     inline: false
                 });
             });
 
             const payload = {
-                username: "LSC • Zbiorczy System Ankiet",
+                username: "LSC • System Zbiorczych Ankiet",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
                 embeds: [{
-                    title: `📋 Nowa Zbiorcza Ankieta Oceny Zarządu`,
-                    description: `Pracownik wypełnił pełną ankietę oceniającą wszystkich członków kadry zarządzającej LSC.`,
+                    title: `📋 Nowa Zbiorcza Opinia o Zarządzie LSC`,
+                    description: `Pracownik wypełnił formularz oceny całej kadry zarządzającej.`,
                     color: 16098851,
-                    fields: fields,
+                    fields: embedFields,
                     footer: {
-                        text: "Los Santos Customs • Oslo RP | Zbiorczy System Ankiet",
+                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta",
                         icon_url: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png"
                     },
                     timestamp: new Date().toISOString()
@@ -295,20 +288,19 @@
                 alertBox.classList.remove('hidden');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                // Reset formularza
-                document.getElementById('collective-form').reset();
-                managementMembers.forEach(m => renderMemberStars(m.id, 5));
+                document.getElementById('main-survey-form').reset();
+                managementTeam.forEach(p => setMemberStars(p.id, 5));
 
                 setTimeout(() => {
                     alertBox.classList.add('hidden');
-                }, 7000);
+                }, 8000);
 
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania opinii na Discord.');
+                alert('Wystąpił błąd podczas wysyłania ankiety na Discord.');
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> Wyślij zbiorczą ankietę zarządu`;
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane text-base"></i><span>Wyślij kompletne opinie o zarządzie</span>`;
             }
         }
     </script>
