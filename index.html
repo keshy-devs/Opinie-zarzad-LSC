@@ -93,7 +93,7 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie przesłana na Discord w formie przejrzystego Embedu</strong>.
+                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie wysłana na Discord w formie zgrabnej, czytelnej wiadomości tekstowej</strong>.
                 </p>
             </div>
         </div>
@@ -273,35 +273,30 @@
         async function submitMasterSurvey(event) {
             event.preventDefault();
 
-            const fieldsArray = [];
+            // Budowanie zgrabnej, czystej wiadomości tekstowej (content) z dopasowanym formatowaniem na Discordzie
+            let messageContent = "📋 **NOWA ZBIORCZA ANKIETA O ZARZĄDZIE LSC**\n";
+            messageContent += "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n";
 
-            managementMembers.forEach(member => {
+            managementMembers.forEach((member, index) => {
                 const rating = document.getElementById(`rating-${member.id}`).value;
                 const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                fieldsArray.push({
-                    name: `👤 ${member.name} [${member.role}] — Ocena: ${starsDisplay} (${rating}/5)`,
-                    value: `👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
-                    inline: false
-                });
+                messageContent += `\n**${index + 1}. ${member.name}** \`[${member.role}]\`\n`;
+                messageContent += `⭐ Ocena: **${starsDisplay}** (${rating}/5)\n`;
+                messageContent += `👍 **Zalety:** ${pros}\n`;
+                messageContent += `💡 **Uwagi:** ${cons}\n`;
+                messageContent += "──────────────────────────────────────\n";
             });
 
+            messageContent += `\n_🔒 100% Anonimowa ankieta pracownicza • ${new Date().toLocaleString('pl-PL')}_`;
+
+            // Wysyłamy jako czysty content z niestandardową nazwą nadawcy webhooka
             const payload = {
-                username: "LSC • System Zbiorczych Ankiet",
+                username: "LSC • System Ankiet",
                 avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
-                embeds: [{
-                    title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
-                    description: `Pracownik przesłał ocenę poszczególnych członków zarządu:`,
-                    color: 16098851, // Kolor bursztynowy LSC
-                    fields: fieldsArray,
-                    footer: {
-                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
-                        icon_url: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png"
-                    },
-                    timestamp: new Date().toISOString()
-                }]
+                content: messageContent
             };
 
             const submitBtn = document.getElementById('submit-btn');
@@ -320,7 +315,7 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania ankiety na Discord. Sprawdź połączenie z internetem.');
+                alert('Wystąpił problem podczas wysyłania ankiety na Discord. Sprawdź połączenie.');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij ankietę zarządu na Discord`;
                 return;
