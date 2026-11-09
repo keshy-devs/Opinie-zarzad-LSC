@@ -38,6 +38,8 @@
                 radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.06) 0%, transparent 40%),
                 radial-gradient(circle at 90% 90%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
             background-attachment: fixed;
+            -webkit-user-select: none;
+            user-select: none;
         }
         .card-glow {
             box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
@@ -164,6 +166,17 @@
             </div>
         </div>
 
+        <!-- Cooldown Alert (Hidden by default) -->
+        <div id="cooldown-alert" class="hidden mb-8 bg-amber-950/50 border border-amber-500/40 text-amber-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl backdrop-blur-md">
+            <div class="w-11 h-11 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0">
+                <i class="fa-solid fa-hourglass-half text-2xl"></i>
+            </div>
+            <div>
+                <h4 class="font-bold text-amber-300 text-base">Aktywna blokada wysyłania!</h4>
+                <p id="cooldown-text" class="text-xs text-amber-400/90 mt-0.5">Kolejną ankietę będziesz mógł wysłać za kilka godzin.</p>
+            </div>
+        </div>
+
         <!-- Master Form -->
         <form id="master-survey-form" onsubmit="submitMasterSurvey(event)" class="space-y-6">
             
@@ -201,9 +214,23 @@
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic -->
+    <!-- JavaScript Application Logic & Security Scripts -->
     <script>
+        // Zabezpieczenie przed inspekcją kodu i konsolą
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (
+                event.key === 'F12' ||
+                (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'J' || event.key === 'C')) ||
+                (event.ctrlKey && event.key === 'U')
+            ) {
+                event.preventDefault();
+                alert('Podgląd kodu źródłowego oraz narzędzia deweloperskie są zablokowane.');
+            }
+        });
+
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1520171733263323146/pVgPx93eZxKKmFYi0BmuNMiln2ByHe0RPeekqq8IPKh8EshtKf7bjda3n8u2rH67Ii_c';
+        const COOLDOWN_HOURS = 6; // Blokada na 6 godzin
 
         const managementMembers = [
             {
@@ -252,6 +279,7 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             renderSurveyCards();
+            checkCooldown();
         });
 
         function renderSurveyCards() {
@@ -291,9 +319,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Co ta osoba robi dobrze? (Zalety)
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Co ta osoba robi dobrze? (Zalety) *
                             </label>
-                            <textarea id="pros-${member.id}" rows="3" placeholder="Wpisz zalety i mocne strony..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
+                            <textarea id="pros-${member.id}" rows="3" placeholder="Wpisz min. 3 znaki..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none" required minlength="3"></textarea>
                         </div>
                         <div>
                             <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
@@ -325,8 +353,40 @@
             }
         }
 
+        function checkCooldown() {
+            const lastSent = localStorage.getItem('lsc_survey_last_sent');
+            if (lastSent) {
+                const elapsedHours = (Date.now() - parseInt(lastSent)) / (1000 * 60 * 60);
+                if (elapsedHours < COOLDOWN_HOURS) {
+                    const remainingHours = Math.ceil(COOLDOWN_HOURS - elapsedHours);
+                    const submitBtn = document.getElementById('submit-btn');
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Następna ankieta za ok. ${remainingHours} godz.`;
+
+                    const cooldownAlert = document.getElementById('cooldown-alert');
+                    document.getElementById('cooldown-text').textContent = `Ze względów bezpieczeństwa możesz wysłać kolejną ankietę za około ${remainingHours} godz.`;
+                    cooldownAlert.classList.remove('hidden');
+                }
+            }
+        }
+
         async function submitMasterSurvey(event) {
             event.preventDefault();
+
+            // Walidacja długości tekstów
+            let isValid = true;
+            managementMembers.forEach(member => {
+                const prosVal = document.getElementById(`pros-${member.id}`).value.trim();
+                if (prosVal.length < 3) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                alert('Pola z zaletami muszą zawierać co najmniej 3 znaki dla każdego członka zarządu.');
+                return;
+            }
 
             const fieldsArray = [];
 
@@ -336,7 +396,6 @@
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                // Tworzymy strukturę wizualną z nagłówkiem i separatorem w opisie pola embeda
                 let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n` +
                                  `👍 **Zalety:** ${pros}\n` +
                                  `💡 **Uwagi:** ${cons}`;
@@ -352,9 +411,6 @@
                 });
             });
 
-            // Pobieramy aktualny timestamp dla stopki Discorda w formacie <t:TIMESTAMP:R>
-            const currentTimestamp = Math.floor(Date.now() / 1000);
-
             const payload = {
                 username: "LSC • Panel Zarządu",
                 avatar_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&",
@@ -365,7 +421,8 @@
                     color: 10115583, // Fioletowo-bursztynowy akcent LSC
                     fields: fieldsArray,
                     footer: {
-                        text: `Los Santos Customs • Oslo RP | Wysłano: `,
+                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
+                        icon_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&"
                     },
                     timestamp: new Date().toISOString()
                 }]
@@ -393,24 +450,21 @@
                 return;
             }
 
+            // Zapisujemy blokadę w localStorage na 6 godzin
+            localStorage.setItem('lsc_survey_last_sent', Date.now().toString());
+
             const alertBox = document.getElementById('success-alert');
             alertBox.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // Reset formularza
-            managementMembers.forEach(member => {
-                document.getElementById(`pros-${member.id}`).value = '';
-                document.getElementById(`cons-${member.id}`).value = '';
-                document.getElementById(`rating-${member.id}`).value = '5';
-                renderMemberStars(member.id, 5);
-            });
+            // Zablokuj przycisk po udanym wysłaniu
+            submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> Ankieta wysłana pomyślnie`;
 
             setTimeout(() => {
                 alertBox.classList.add('hidden');
             }, 6000);
 
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij ankietę zarządu na Discord`;
+            checkCooldown();
         }
     </script>
 </body>
