@@ -103,7 +103,7 @@
                 </div>
                 <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Na dole znajdziesz również pole na ogólne propozycje i zmiany we frakcji.
+                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Na dole znajdziesz również pole na swoje propozycje ulepszeń i zmian w LSC.
                 </p>
             </div>
         </div>
@@ -190,7 +190,7 @@
                 <!-- Dynamically injected member evaluation blocks -->
             </div>
 
-            <!-- Additional General Feedback / Red Color Proposals Section -->
+            <!-- Additional General Feedback Section -->
             <div class="bg-lsc-card border border-amber-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-5">
                 <div class="flex items-center space-x-3.5 border-b border-lsc-border pb-4">
                     <div class="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 font-bold shadow-inner">
@@ -198,15 +198,15 @@
                     </div>
                     <div>
                         <h3 class="font-heading text-xl font-bold text-white tracking-wide">Propozycje i Ulepszenia Frakcji</h3>
-                        <p class="text-xs text-slate-400">Co chciałbyś zmienić w LSC / kolorze czerwonym lub co warto ulepszyć?</p>
+                        <p class="text-xs text-slate-400">Co chciałbyś / chciałabyś zmienić w LSC lub co warto ulepszyć?</p>
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Twoje uwagi, pomysły i propozycje zmian (opcjonalnie)
+                        <span class="w-2 h-2 rounded-full bg-amber-400"></span> Twoje propozycje zmian, pomysły lub uwagi (opcjonalnie)
                     </label>
-                    <textarea id="general-proposals" rows="4" placeholder="Wpisz swoje propozycje ulepszeń, zmiany w kolorze czerwonym lub uwagi ogólne..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
+                    <textarea id="general-proposals" rows="4" placeholder="Wpisz, co chciałbyś / chciałabyś zmienić w LSC lub jakie masz pomysły na ulepszenie frakcji..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
                 </div>
             </div>
 
@@ -270,7 +270,7 @@
             };
         })();
 
-        const COOLDOWN_HOURS = 12; // Zmieniono blokadę na 12 godzin
+        const COOLDOWN_HOURS = 12; // Blokada na 12 godzin
 
         const managementMembers = [
             {
@@ -435,7 +435,7 @@
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                // Sformatowany układ z odstępami i wyraźnym podziałem (analogicznie do wskazanego wzorca)
+                // Sformatowany układ z odstępami i wyraźnym podziałem
                 let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n\n` +
                                  `👍 **Zalety:**\n${pros}\n\n` +
                                  `💡 **Uwagi:**\n${cons}`;
@@ -455,8 +455,8 @@
             const generalProposals = document.getElementById('general-proposals').value.trim();
             if (generalProposals) {
                 fieldsArray.push({
-                    name: `💡 Ogólne Propozycje / Zmiany we Frakcji`,
-                    value: `📝 **Treść propozycji:**\n${generalProposals}`,
+                    name: `💡 Propozycje i Ulepszenia Frakcji`,
+                    value: `📝 **Co chciałbyś / chciałabyś zmienić:**\n${generalProposals}`,
                     inline: false
                 });
             }
