@@ -91,9 +91,9 @@
                 <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-5 border border-amber-500/20 shadow-inner">
                     <i class="fa-solid fa-shield-halved"></i> Panel Pracowniczy
                 </div>
-                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym raporcie</h2>
+                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-4 tracking-tight">Oceń zarząd w jednym formularzu</h2>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie przesłana na Discord w formie przejrzystego, sformatowanego raportu</strong>.
+                    Przeanalizuj pracę poszczególnych członków zarządu, wystaw oceny gwiazdkowe oraz przekaż konstruktywne zalety i uwagi. Po zatwierdzeniu formularza <strong>całość zostanie przesłana na Discord w formie przejrzystego Embedu</strong>.
                 </p>
             </div>
         </div>
@@ -104,8 +104,8 @@
                 <i class="fa-solid fa-circle-check text-2xl"></i>
             </div>
             <div>
-                <h4 class="font-bold text-emerald-300 text-base">Raport został pomyślnie wygenerowany!</h4>
-                <p class="text-xs text-emerald-400/90 mt-0.5">Dziękujemy za zaangażowanie. Twoja opinia o całym zarządzie trafiła na kanał Discord w czytelnej formie.</p>
+                <h4 class="font-bold text-emerald-300 text-base">Ankieta została pomyślnie wysłana!</h4>
+                <p class="text-xs text-emerald-400/90 mt-0.5">Dziękujemy za zaangażowanie. Twoja opinia o całym zarządzie trafiła na kanał Discord.</p>
             </div>
         </div>
 
@@ -120,10 +120,10 @@
             <div class="pt-6 pb-16">
                 <button type="submit" id="submit-btn" class="w-full py-5 px-8 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-heading font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 flex items-center justify-center space-x-3 cursor-pointer">
                     <i class="fa-solid fa-paper-plane text-xl"></i>
-                    <span>Wyślij kompletny raport na Discord</span>
+                    <span>Wyślij ankietę zarządu na Discord</span>
                 </button>
                 <p class="text-xs text-slate-500 text-center mt-4 flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-lock text-amber-500"></i> Formularz całkowicie anonimowy. Żadne dane osobowe ani tokeny nie są rejestrowane.
+                    <i class="fa-solid fa-lock text-amber-500"></i> Formularz całkowicie anonimowy. Żadne dane osobowe nie są rejestrowane.
                 </p>
             </div>
 
@@ -273,34 +273,40 @@
         async function submitMasterSurvey(event) {
             event.preventDefault();
 
-            // Budowanie wyjątkowo czytelnego raportu tekstowego w formacie Microsoft Docs / Markdown (wewnątrz bloku kodu Discorda)
-            let report = "==================================================\n";
-            report += "           RAPORT: OCENA ZARZĄDU LSC\n";
-            report += "==================================================\n\n";
+            const fieldsArray = [];
 
-            managementMembers.forEach((member, index) => {
+            managementMembers.forEach(member => {
                 const rating = document.getElementById(`rating-${member.id}`).value;
                 const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
-                const starsDisplay = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
+                const starsDisplay = '⭐'.repeat(parseInt(rating));
 
-                report += `[${index + 1}] ${member.name.toUpperCase()} (${member.role})\n`;
-                report += `    Ocena: ${starsDisplay} [${rating}/5]\n\n`;
-                report += `    (+) Zalety:\n        ${pros.replace(/\n/g, '\n        ')}\n\n`;
-                report += `    (-) Uwagi / Do poprawy:\n        ${cons.replace(/\n/g, '\n        ')}\n`;
-                report += "--------------------------------------------------\n";
+                fieldsArray.push({
+                    name: `👤 ${member.name} [${member.role}] — Ocena: ${starsDisplay} (${rating}/5)`,
+                    value: `👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
+                    inline: false
+                });
             });
 
-            report += `\nData wygenerowania raportu: ${new Date().toLocaleString('pl-PL')}`;
-
-            // Wysyłamy sformatowaną wiadomość w bloku kodu tekstu (gwarancja perfekcyjnej czytelności na każdym urządzeniu na Discordzie)
             const payload = {
-                content: "```yaml\n" + report + "\n```"
+                username: "LSC • System Zbiorczych Ankiet",
+                avatar_url: "https://cdn-icons-png.flaticon.com/512/2954/2954848.png",
+                embeds: [{
+                    title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
+                    description: `Pracownik przesłał ocenę poszczególnych członków zarządu:`,
+                    color: 16098851, // Kolor bursztynowy LSC
+                    fields: fieldsArray,
+                    footer: {
+                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
+                        icon_url: "https://cdn-icons-png.flaticon.com/512/1006/1006771.png"
+                    },
+                    timestamp: new Date().toISOString()
+                }]
             };
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generowanie i wysyłanie raportu...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Wysyłanie ankiety...`;
 
             try {
                 const response = await fetch(WEBHOOK_URL, {
@@ -314,9 +320,9 @@
                 }
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania raportu na Discord. Sprawdź połączenie.');
+                alert('Wystąpił problem podczas wysyłania ankiety na Discord. Sprawdź połączenie z internetem.');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij kompletny raport na Discord`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij ankietę zarządu na Discord`;
                 return;
             }
 
@@ -337,7 +343,7 @@
             }, 6000);
 
             submitBtn.disabled = false;
-            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij kompletny raport na Discord`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-xl"></i> Wyślij ankietę zarządu na Discord`;
         }
     </script>
 </body>
