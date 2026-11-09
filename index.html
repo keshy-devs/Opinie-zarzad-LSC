@@ -330,30 +330,42 @@
 
             const fieldsArray = [];
 
-            managementMembers.forEach(member => {
+            managementMembers.forEach((member, index) => {
                 const rating = document.getElementById(`rating-${member.id}`).value;
                 const pros = document.getElementById(`pros-${member.id}`).value.trim() || 'Brak wpisanych zalet.';
                 const cons = document.getElementById(`cons-${member.id}`).value.trim() || 'Brak uwag.';
                 const starsDisplay = '⭐'.repeat(parseInt(rating));
 
+                // Tworzymy strukturę wizualną z nagłówkiem i separatorem w opisie pola embeda
+                let fieldValue = `⭐ **Ocena:** ${starsDisplay} (${rating}/5)\n` +
+                                 `👍 **Zalety:** ${pros}\n` +
+                                 `💡 **Uwagi:** ${cons}`;
+
+                if (index < managementMembers.length - 1) {
+                    fieldValue += `\n\n──────────────────────────────────────`;
+                }
+
                 fieldsArray.push({
-                    name: `👤 ${member.name} [${member.role}] — Ocena: ${starsDisplay} (${rating}/5)`,
-                    value: `👍 **Zalety:** ${pros}\n💡 **Uwagi:** ${cons}`,
+                    name: `👤 ${member.name} [${member.role}]`,
+                    value: fieldValue,
                     inline: false
                 });
             });
 
+            // Pobieramy aktualny timestamp dla stopki Discorda w formacie <t:TIMESTAMP:R>
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+
             const payload = {
                 username: "LSC • Panel Zarządu",
                 avatar_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&",
+                content: "<@&1143211475637387407>", // Automatyczny ping roli zarządu
                 embeds: [{
                     title: `📋 Nowa Zbiorcza Ankieta o Zarządzie LSC`,
-                    description: `Pracownik przesłał ocenę poszczególnych członków zarządu:`,
-                    color: 10115583, // Fioletowo-bursztynowy akcent pasujący do LSC
+                    description: `Pracownik przesłał nową anonimową ocenę członków zarządu:`,
+                    color: 10115583, // Fioletowo-bursztynowy akcent LSC
                     fields: fieldsArray,
                     footer: {
-                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ankieta Zbiorcza",
-                        icon_url: "https://cdn.discordapp.com/attachments/1520178629286559815/1569284105609412730/Lsc_image.png?ex=6af2e536&is=6af193b6&hm=03a61b42167e426652fcc73c12c9b1188d31d00968b1f0a3a137b38bc90042b8&"
+                        text: `Los Santos Customs • Oslo RP | Wysłano: `,
                     },
                     timestamp: new Date().toISOString()
                 }]
