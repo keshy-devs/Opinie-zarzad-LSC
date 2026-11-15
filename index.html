@@ -387,20 +387,19 @@
                 </div>
             </div>
 
-            <!-- TAB 2: REPORT / PROPOSAL WITH MESSAGE STYLES -->
+            <!-- TAB 2: REPORT / PROPOSAL WITH MESSAGE STYLES (NO COOLDOWN) -->
             <div id="view-report" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
                 <!-- Left Column: Style Picker & Form (7 cols) -->
                 <div class="lg:col-span-7 glass-panel rounded-3xl p-6 space-y-6">
-                    <div class="border-b border-base-border pb-4">
-                        <h3 class="font-display font-bold text-xl text-white">Nowe Zgłoszenie lub Propozycja</h3>
-                        <p class="text-xs text-slate-400 mt-1">Wybierz styl wiadomości — zmieni on wygląd, kolor oraz format raportu wysyłanego na Discord.</p>
-                    </div>
-
-                    <!-- Cooldown Banner -->
-                    <div id="cooldown-report-box" class="hidden bg-rose-950/50 border border-rose-500/30 rounded-2xl p-3.5 flex items-center gap-3 text-xs text-rose-200">
-                        <i class="fa-solid fa-clock text-rose-400 text-base"></i>
-                        <span id="cooldown-report-text">Wysłałeś już zgłoszenie.</span>
+                    <div class="border-b border-base-border pb-4 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h3 class="font-display font-bold text-xl text-white">Nowe Zgłoszenie lub Propozycja</h3>
+                            <p class="text-xs text-slate-400 mt-1">Wybierz styl wiadomości — zmieni on wygląd, kolor oraz format raportu wysyłanego na Discord.</p>
+                        </div>
+                        <span class="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                            <i class="fa-solid fa-infinity mr-1"></i> BEZ LIMITU CZASU
+                        </span>
                     </div>
 
                     <!-- Message Style Cards -->
@@ -519,7 +518,7 @@
         const DISCORD_CLIENT_ID = '1529307786670768330';
         const DISCORD_GUILD_ID = '1100715662583803916';
         const REDIRECT_URI = window.location.origin + window.location.pathname;
-        const COOLDOWN_HOURS = 12;
+        const REVIEW_COOLDOWN_HOURS = 12;
 
         const _webhookSys = (() => {
             const p = [
@@ -783,7 +782,6 @@
             renderStylesGrid();
             updateLivePreview();
             updateReportPreview();
-            checkReportCooldown();
         }
 
         function setActiveTab(tab) {
@@ -802,7 +800,6 @@
                 vRev.classList.add('hidden');
                 bRep.className = 'rounded-2xl p-4 text-left transition-all flex items-center gap-3.5 bg-gradient-to-br from-rose-600 to-pink-600 text-white shadow-lg shadow-rose-600/20 cursor-pointer';
                 bRev.className = 'rounded-2xl p-4 text-left transition-all flex items-center gap-3.5 bg-base-900/70 hover:bg-base-800 border border-base-border text-slate-300 cursor-pointer';
-                checkReportCooldown();
             }
         }
 
@@ -812,7 +809,7 @@
 
             managementStaff.forEach(m => {
                 const selected = m.id === currentMemberId;
-                const locked = getCooldownHours(`lsc_rev_${workerSession?.id}_${m.id}`) > 0;
+                const locked = getReviewCooldownHours(`lsc_rev_${workerSession?.id}_${m.id}`) > 0;
 
                 const card = document.createElement('button');
                 card.type = 'button';
@@ -940,15 +937,15 @@
             document.getElementById('prev-rep-body').textContent = body;
         }
 
-        function getCooldownHours(key) {
+        function getReviewCooldownHours(key) {
             const ts = localStorage.getItem(key);
             if (!ts) return 0;
             const diff = (Date.now() - parseInt(ts)) / 3600000;
-            return diff < COOLDOWN_HOURS ? Math.ceil(COOLDOWN_HOURS - diff) : 0;
+            return diff < REVIEW_COOLDOWN_HOURS ? Math.ceil(REVIEW_COOLDOWN_HOURS - diff) : 0;
         }
 
         function checkReviewCooldown(memberId) {
-            const rem = getCooldownHours(`lsc_rev_${workerSession?.id}_${memberId}`);
+            const rem = getReviewCooldownHours(`lsc_rev_${workerSession?.id}_${memberId}`);
             const box = document.getElementById('cooldown-review-box');
             const btn = document.getElementById('btn-submit-review');
 
@@ -963,25 +960,6 @@
                 btn.disabled = false;
                 btn.classList.remove('opacity-50', 'cursor-not-allowed');
                 btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Wyślij ocenę na kanał zarządu</span>`;
-            }
-        }
-
-        function checkReportCooldown() {
-            const rem = getCooldownHours(`lsc_rep_${workerSession?.id}`);
-            const box = document.getElementById('cooldown-report-box');
-            const btn = document.getElementById('btn-submit-report');
-
-            if (rem > 0) {
-                box.classList.remove('hidden');
-                document.getElementById('cooldown-report-text').textContent = `Wysłałeś już zgłoszenie. Kolejne możesz wysłać za ok. ${rem} godz.`;
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Blokada czasowa (${rem}h)</span>`;
-            } else {
-                box.classList.add('hidden');
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Wyślij wiadomość na Discord</span>`;
             }
         }
 
@@ -1076,7 +1054,7 @@
             showToast(`Wysłano ocenę dla ${m.name}!`, `Karta podpisana jako [${workerSession.badge}] ${workerSession.fullName} trafiła na Discord.`);
         }
 
-        // RAPORT / PROPOZYCJA DISCORD
+        // RAPORT / PROPOZYCJA DISCORD (BEZ COOLDOWNU)
         async function handleReportSubmit(e) {
             e.preventDefault();
             if (!workerSession) return;
@@ -1145,10 +1123,10 @@
                 return;
             }
 
-            localStorage.setItem(`lsc_rep_${workerSession.id}`, Date.now().toString());
             document.getElementById('report-title').value = '';
             document.getElementById('report-body').value = '';
-            checkReportCooldown();
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fa-solid fa-paper-plane"></i> <span>Wyślij wiadomość na Discord</span>`;
             updateReportPreview();
             showToast(`Wysłano: ${s.name}!`, `Wiadomość podpisana jako [${workerSession.badge}] ${workerSession.fullName} pojawiła się na Discordzie.`);
         }
