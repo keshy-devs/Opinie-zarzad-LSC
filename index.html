@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSC - System Opinii i Propozycji | Oslo RP</title>
+    <title>LSC - System Opinii i Zgłoszeń | Oslo RP</title>
     
     <!-- Open Graph Meta Tags for Discord Link Preview -->
-    <meta property="og:title" content="LSC • System Opinii i Propozycji">
-    <meta property="og:description" content="Oficjalny, w 100% anonimowy system oceny poszczególnych członków zarządu oraz zgłaszania propozycji w Los Santos Customs na Oslo RP.">
+    <meta property="og:title" content="LSC • System Opinii i Zgłoszeń">
+    <meta property="og:description" content="Oficjalny panel pracowniczy Los Santos Customs na Oslo RP z autoryzacją Discord. Oceń zarząd lub zgłoś sytuację.">
     <meta property="og:image" content="https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#f59e0b">
@@ -32,6 +32,10 @@
                             card: '#0e1117',
                             border: '#1f2633',
                             accent: '#f59e0b',
+                        },
+                        discord: {
+                            DEFAULT: '#5865F2',
+                            hover: '#4752C4'
                         }
                     }
                 }
@@ -44,7 +48,7 @@
             color: #f1f5f9;
             background-image: 
                 radial-gradient(circle at 10% 10%, rgba(245, 158, 11, 0.06) 0%, transparent 40%),
-                radial-gradient(circle at 90% 90%, rgba(244, 63, 94, 0.05) 0%, transparent 40%);
+                radial-gradient(circle at 90% 90%, rgba(88, 101, 242, 0.06) 0%, transparent 40%);
             background-attachment: fixed;
             -webkit-user-select: none;
             user-select: none;
@@ -78,254 +82,342 @@
 
     <!-- Top Navigation / Header -->
     <header class="border-b border-lsc-border bg-lsc-dark/80 backdrop-blur-xl sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
             <div class="flex items-center space-x-3.5">
-                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-amber-500/25 text-black font-black text-2xl font-heading overflow-hidden">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-yellow-400 flex items-center justify-center shadow-lg shadow-amber-500/25 text-black font-black text-2xl font-heading overflow-hidden flex-shrink-0">
                     <img src="logo.png" alt="LSC Logo" class="w-full h-full object-cover">
                 </div>
                 <div>
-                    <h1 class="font-heading text-2xl font-extrabold tracking-wide text-white flex items-center gap-2.5">
-                        LOS SANTOS CUSTOMS <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 uppercase tracking-wider font-semibold">Oslo RP</span>
+                    <h1 class="font-heading text-xl sm:text-2xl font-extrabold tracking-wide text-white flex items-center gap-2.5">
+                        LOS SANTOS CUSTOMS <span class="hidden sm:inline-block text-[11px] px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 uppercase tracking-wider font-semibold">Oslo RP</span>
                     </h1>
-                    <p class="text-xs text-slate-400 font-medium">System Opinii o Zarządzie i Propozycji</p>
+                    <p class="text-xs text-slate-400 font-medium">System Opinii o Zarządzie i Zgłoszeń</p>
                 </div>
             </div>
             
-            <div class="hidden sm:flex items-center space-x-2.5 bg-white/[0.03] border border-white/10 px-4 py-2 rounded-2xl text-xs text-slate-300 backdrop-blur-md">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span class="font-medium">100% Poufne i Anonimowe</span>
+            <!-- Logged In User Badge -->
+            <div id="user-header-badge" class="hidden items-center space-x-3 bg-white/[0.04] border border-white/10 px-3.5 py-2 rounded-2xl backdrop-blur-md">
+                <img id="user-avatar" src="" alt="Avatar" class="w-8 h-8 rounded-xl border border-amber-500/40 object-cover">
+                <div class="text-left">
+                    <div class="flex items-center gap-1.5">
+                        <span id="user-badge-pill" class="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-400 border border-amber-500/30 text-[10px] font-extrabold tracking-wider">[--]</span>
+                        <span id="user-fullname" class="text-xs font-bold text-white truncate max-w-[130px] sm:max-w-[180px]">Pracownik LSC</span>
+                    </div>
+                    <button type="button" onclick="logoutDiscord()" class="text-[10px] text-slate-400 hover:text-rose-400 transition cursor-pointer flex items-center gap-1 mt-0.5">
+                        <i class="fa-solid fa-right-from-bracket"></i> Wyloguj się
+                    </button>
+                </div>
+            </div>
+
+            <!-- Not Logged Badge -->
+            <div id="guest-header-badge" class="hidden sm:flex items-center space-x-2.5 bg-white/[0.03] border border-white/10 px-4 py-2 rounded-2xl text-xs text-slate-300 backdrop-blur-md">
+                <i class="fa-brands fa-discord text-discord text-base"></i>
+                <span class="font-medium">Wymagana Autoryzacja LSC</span>
             </div>
         </div>
     </header>
 
     <!-- Main Container -->
     <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
-        
-        <!-- Info Banner -->
-        <div class="mb-8 bg-gradient-to-br from-lsc-card via-[#121620] to-lsc-dark border border-lsc-border rounded-3xl p-7 sm:p-9 card-glow relative overflow-hidden">
-            <div class="absolute -right-16 -bottom-16 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-            <div class="relative z-10 max-w-2xl">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 text-amber-400 text-xs font-semibold mb-4 border border-amber-500/20 shadow-inner">
-                    <i class="fa-solid fa-shield-halved"></i> Panel Pracowniczy LSC
-                </div>
-                <h2 class="text-3xl sm:text-4xl font-heading font-bold text-white mb-3 tracking-tight">Wystaw opinię lub zgłoś pomysł</h2>
-                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    Zbiorcza ankieta dobiegła końca. Od teraz możesz w dowolnym momencie ocenić wybranego członka zarządu indywidualnie lub przesłać w pełni anonimową propozycję zmian we frakcji.
-                </p>
-            </div>
-        </div>
 
-        <!-- Mode Switcher Tabs -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <button type="button" id="tab-btn-review" onclick="switchTab('review')" class="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-heading font-bold text-base transition-all duration-300 bg-gradient-to-r from-amber-500 to-yellow-500 text-black shadow-lg shadow-amber-500/20 cursor-pointer">
-                <i class="fa-solid fa-star text-lg"></i>
-                <span>Oceń Członka Zarządu</span>
-            </button>
-            <button type="button" id="tab-btn-proposal" onclick="switchTab('proposal')" class="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-heading font-bold text-base transition-all duration-300 bg-lsc-card border border-lsc-border text-slate-300 hover:border-rose-500/50 hover:text-white cursor-pointer">
-                <i class="fa-solid fa-fire text-lg text-rose-400"></i>
-                <span>Anonimowa Propozycja</span>
-            </button>
-        </div>
+        <!-- AUTH GATE (Shown when not logged in or verifying) -->
+        <section id="auth-gate" class="fade-in max-w-2xl mx-auto my-6">
+            <div class="bg-gradient-to-br from-lsc-card via-[#121620] to-lsc-dark border border-lsc-border rounded-3xl p-8 sm:p-10 card-glow text-center relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-discord/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Success Alert -->
-        <div id="success-alert" class="hidden mb-8 bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl backdrop-blur-md">
-            <div class="w-11 h-11 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
-                <i class="fa-solid fa-circle-check text-2xl"></i>
-            </div>
-            <div>
-                <h4 id="success-title" class="font-bold text-emerald-300 text-base">Zgłoszenie zostało wysłane!</h4>
-                <p id="success-desc" class="text-xs text-emerald-400/90 mt-0.5">Dziękujemy za zaangażowanie. Twoja wiadomość trafiła anonimowo na kanał Discord.</p>
-            </div>
-        </div>
+                <div class="relative z-10">
+                    <div class="w-16 h-16 rounded-2xl bg-discord/15 border border-discord/30 flex items-center justify-center text-discord text-3xl mx-auto mb-6 shadow-lg">
+                        <i class="fa-brands fa-discord"></i>
+                    </div>
 
-        <!-- TAB 1: INDIVIDUAL MANAGEMENT REVIEW -->
-        <section id="section-review" class="fade-in space-y-8">
-            
-            <!-- Step 1: Select Member -->
-            <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-8 card-glow">
-                <div class="flex items-center justify-between mb-5">
-                    <div>
-                        <h3 class="font-heading text-xl font-bold text-white flex items-center gap-2.5">
-                            <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 text-xs flex items-center justify-center font-extrabold">1</span>
-                            Wybierz osobę do oceny
-                        </h3>
-                        <p class="text-xs text-slate-400 mt-1">Kliknij kartę członka zarządu, którego pracę chcesz ocenić.</p>
+                    <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">Zaloguj się przez Discord LSC</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                        Aby wystawić opinię członkowi zarządu lub wysłać zgłoszenie, musisz potwierdzić swoją tożsamość kontem Discord powiązanym z serwerem <strong class="text-white">Los Santos Customs</strong>. System automatycznie pobierze Twoją <strong class="text-amber-400">odznakę oraz imię i nazwisko</strong>.
+                    </p>
+
+                    <!-- Auth Error Box -->
+                    <div id="auth-error-box" class="hidden mb-6 bg-rose-950/60 border border-rose-500/40 text-rose-200 p-4 rounded-2xl text-xs text-left flex items-start gap-3">
+                        <i class="fa-solid fa-circle-exclamation text-rose-400 text-lg mt-0.5"></i>
+                        <div>
+                            <div class="font-bold text-rose-300 text-sm mb-0.5">Błąd weryfikacji konta</div>
+                            <p id="auth-error-text">Nie znaleziono Cię na serwerze Discord LSC.</p>
+                        </div>
+                    </div>
+
+                    <!-- Loading Spinner during OAuth verification -->
+                    <div id="auth-loading" class="hidden py-4 text-amber-400 font-semibold text-sm flex items-center justify-center gap-3">
+                        <i class="fa-solid fa-spinner fa-spin text-xl"></i>
+                        <span>Weryfikacja odznaki i członkostwa na Discordzie LSC...</span>
+                    </div>
+
+                    <button type="button" id="discord-login-btn" onclick="loginWithDiscord()" class="w-full sm:w-auto px-8 py-4 bg-discord hover:bg-discord-hover text-white font-heading font-bold text-base rounded-2xl transition-all duration-300 shadow-xl shadow-discord/25 hover:shadow-discord/40 hover:-translate-y-0.5 inline-flex items-center justify-center gap-3 cursor-pointer">
+                        <i class="fa-brands fa-discord text-xl"></i>
+                        <span>Połącz z Discordem LSC</span>
+                    </button>
+
+                    <div class="mt-6 pt-5 border-t border-lsc-border/60 flex flex-wrap items-center justify-center gap-4 text-[11px] text-slate-400">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-id-badge text-amber-400"></i> Odczyt odznaki z nicku</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-server text-discord"></i> Weryfikacja serwera LSC</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-check text-emerald-400"></i> Bezpieczne OAuth2</span>
                     </div>
                 </div>
-
-                <div id="member-selector-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-                    <!-- Dynamically rendered member selector buttons -->
-                </div>
             </div>
+        </section>
 
-            <!-- Step 2: Evaluation Form -->
-            <form id="single-review-form" onsubmit="submitSingleReview(event)" class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-8 card-glow space-y-6">
-                
-                <!-- Selected Member Header & Star Rating -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-lsc-border pb-6">
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-12 h-12 rounded-2xl bg-[#161b26] border border-lsc-border flex items-center justify-center text-amber-400 font-bold shadow-inner">
-                            <i class="fa-solid fa-user-shield text-xl"></i>
+        <!-- AUTHENTICATED APP CONTENT -->
+        <div id="app-content" class="hidden fade-in">
+            
+            <!-- Verified Worker Banner -->
+            <div class="mb-8 bg-gradient-to-br from-lsc-card via-[#121620] to-lsc-dark border border-lsc-border rounded-3xl p-6 sm:p-8 card-glow relative overflow-hidden">
+                <div class="absolute -right-16 -bottom-16 w-72 h-72 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold mb-3 border border-emerald-500/20">
+                            <i class="fa-solid fa-circle-check"></i> Zweryfikowany Pracownik LSC
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white tracking-tight">
+                            Witaj, <span id="welcome-worker-name" class="text-amber-400">[00] Imię Nazwisko</span>!
+                        </h2>
+                        <p class="text-slate-300 text-xs sm:text-sm mt-1.5 max-w-2xl">
+                            Twoja odznaka oraz imię i nazwisko zostały automatycznie przypisane do formularza. Wybierz poniżej, czy chcesz ocenić osobę z zarządu, czy wysłać zgłoszenie/propozycję.
+                        </p>
+                    </div>
+
+                    <div class="bg-[#080a0f] border border-lsc-border rounded-2xl p-4 flex items-center gap-3.5 flex-shrink-0">
+                        <div class="w-11 h-11 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 font-heading font-extrabold text-base" id="card-badge-display">
+                            00
                         </div>
                         <div>
-                            <div class="flex items-center gap-2.5 flex-wrap">
-                                <h3 id="selected-member-name" class="font-heading text-2xl font-bold text-white tracking-wide">Clara Fox</h3>
-                                <span id="selected-member-badge" class="px-3 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-slate-200/10 text-slate-200 border border-slate-400/30">SZEF</span>
-                            </div>
-                            <p class="text-xs text-slate-400 mt-0.5">Indywidualna karta oceny pracowniczej</p>
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Dane Zgłaszającego</div>
+                            <div class="text-sm font-bold text-white" id="card-name-display">Imię Nazwisko</div>
+                            <div class="text-[11px] text-slate-400" id="card-discord-tag">@discord</div>
                         </div>
                     </div>
-
-                    <!-- Star Rating Selector -->
-                    <div class="flex items-center space-x-2 bg-[#080a0f] px-4 py-3 rounded-2xl border border-lsc-border self-start sm:self-auto">
-                        <span class="text-xs text-slate-400 mr-1 font-bold uppercase tracking-wider">Ocena:</span>
-                        <div class="flex space-x-1.5" id="single-stars-container">
-                            <!-- Stars rendered by JS -->
-                        </div>
-                        <input type="hidden" id="single-rating" value="5">
-                    </div>
                 </div>
+            </div>
 
-                <!-- Cooldown Warning for Selected Member -->
-                <div id="member-cooldown-alert" class="hidden bg-amber-950/50 border border-amber-500/40 text-amber-200 p-4 rounded-2xl flex items-center space-x-3.5">
-                    <i class="fa-solid fa-hourglass-half text-amber-400 text-xl"></i>
-                    <p id="member-cooldown-text" class="text-xs text-amber-300">Oceniłeś już tę osobę. Kolejną opinię dla niej będziesz mógł wystawić za kilka godzin.</p>
+            <!-- Mode Switcher Tabs -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <button type="button" id="tab-btn-review" onclick="switchTab('review')" class="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-heading font-bold text-base transition-all duration-300 bg-gradient-to-r from-amber-500 to-yellow-500 text-black shadow-lg shadow-amber-500/20 cursor-pointer">
+                    <i class="fa-solid fa-star text-lg"></i>
+                    <span>Oceń Członka Zarządu</span>
+                </button>
+                <button type="button" id="tab-btn-proposal" onclick="switchTab('proposal')" class="flex items-center justify-center gap-3 py-4 px-6 rounded-2xl font-heading font-bold text-base transition-all duration-300 bg-lsc-card border border-lsc-border text-slate-300 hover:border-rose-500/50 hover:text-white cursor-pointer">
+                    <i class="fa-solid fa-bullhorn text-lg text-rose-400"></i>
+                    <span>Zgłoszenie / Propozycja</span>
+                </button>
+            </div>
+
+            <!-- Success Alert -->
+            <div id="success-alert" class="hidden mb-8 bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 p-5 rounded-2xl flex items-center space-x-4 shadow-xl backdrop-blur-md">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 flex-shrink-0">
+                    <i class="fa-solid fa-circle-check text-2xl"></i>
                 </div>
-
-                <!-- Pros & Cons Inputs -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Co ta osoba robi dobrze? (Zalety) *
-                        </label>
-                        <textarea id="single-pros" rows="4" placeholder="Opisz mocne strony, zaangażowanie lub podejście do pracowników (min. 3 znaki)..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none" required minlength="3"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-amber-400"></span> Co można by poprawić? (Uwagi)
-                        </label>
-                        <textarea id="single-cons" rows="4" placeholder="Wpisz ewentualne konstruktywne uwagi lub sugestie (opcjonalnie)..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
-                    </div>
+                <div>
+                    <h4 id="success-title" class="font-bold text-emerald-300 text-base">Zgłoszenie zostało wysłane!</h4>
+                    <p id="success-desc" class="text-xs text-emerald-400/90 mt-0.5">Twoja wiadomość wraz z danymi odznaki trafiła na kanał Discord zarządu.</p>
                 </div>
+            </div>
 
-                <!-- Submit Button -->
-                <div class="pt-2">
-                    <button type="submit" id="review-submit-btn" class="w-full py-4 px-8 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-heading font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 flex items-center justify-center space-x-3 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane text-lg"></i>
-                        <span>Wyślij ocenę tej osoby na Discord</span>
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- TAB 2: ANONYMOUS PROPOSAL -->
-        <section id="section-proposal" class="hidden fade-in space-y-8">
-            <form id="proposal-form" onsubmit="submitProposal(event)" class="bg-lsc-card border border-rose-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-6">
+            <!-- TAB 1: INDIVIDUAL MANAGEMENT REVIEW -->
+            <section id="section-review" class="fade-in space-y-8">
                 
-                <div class="flex items-center space-x-3.5 border-b border-lsc-border pb-5">
-                    <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold shadow-inner">
-                        <i class="fa-solid fa-fire text-xl"></i>
+                <!-- Step 1: Select Member -->
+                <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-8 card-glow">
+                    <div class="mb-5">
+                        <h3 class="font-heading text-xl font-bold text-white flex items-center gap-2.5">
+                            <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 text-xs flex items-center justify-center font-extrabold">1</span>
+                            Wybierz osobę z zarządu do oceny
+                        </h3>
+                        <p class="text-xs text-slate-400 mt-1">Kliknij kartę osoby, którą chcesz ocenić.</p>
                     </div>
-                    <div>
-                        <h3 class="font-heading text-2xl font-bold text-white tracking-wide">Anonimowa Propozycja Zmian</h3>
-                        <p class="text-xs text-slate-400">Masz pomysł na rozwój warsztatu, zmianę zasad lub nową funkcję? Napisz śmiało.</p>
-                    </div>
-                </div>
 
-                <!-- Cooldown Warning for Proposal -->
-                <div id="proposal-cooldown-alert" class="hidden bg-rose-950/50 border border-rose-500/40 text-rose-200 p-4 rounded-2xl flex items-center space-x-3.5">
-                    <i class="fa-solid fa-hourglass-half text-rose-400 text-xl"></i>
-                    <p id="proposal-cooldown-text" class="text-xs text-rose-300">Wysłałeś już propozycję. Kolejną będziesz mógł wysłać za kilka godzin.</p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Kategoria propozycji
-                        </label>
-                        <select id="proposal-category" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
-                            <option value="Organizacja Pracy i Zasady">Organizacja Pracy i Zasady</option>
-                            <option value="Tuning, Cennik i Usługi">Tuning, Cennik i Usługi</option>
-                            <option value="Flota, Wyposażenie i Warsztat">Flota, Wyposażenie i Warsztat</option>
-                            <option value="System Premii i Awansów">System Premii i Awansów</option>
-                            <option value="Inna Propozycja / Uwaga">Inna Propozycja / Uwaga</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Krótki tytuł propozycji *
-                        </label>
-                        <input type="text" id="proposal-title" placeholder="Np. Nowy system premii weekendowych..." required minlength="4" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
+                    <div id="member-selector-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                        <!-- Dynamically rendered member selector buttons -->
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Szczegółowy opis propozycji *
-                    </label>
-                    <textarea id="proposal-content" rows="5" placeholder="Opisz dokładnie swój pomysł, jak miałby działać oraz jakie korzyści przyniesie dla LSC (min. 10 znaków)..." required minlength="10" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition resize-none"></textarea>
-                </div>
-
-                <div class="pt-2">
-                    <button type="submit" id="proposal-submit-btn" class="w-full py-4 px-8 bg-gradient-to-r from-rose-600 via-rose-500 to-red-500 hover:from-rose-700 hover:to-red-600 text-white font-heading font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-rose-500/20 hover:shadow-rose-500/40 hover:-translate-y-0.5 flex items-center justify-center space-x-3 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane text-lg"></i>
-                        <span>Wyślij anonimową propozycję na Discord</span>
-                    </button>
-                </div>
-            </form>
-        </section>
-
-        <!-- Rules & Guidelines Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 mb-6">
-            <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
-                            <i class="fa-solid fa-file-lines"></i>
+                <!-- Step 2: Evaluation Form -->
+                <form id="single-review-form" onsubmit="submitSingleReview(event)" class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-8 card-glow space-y-6">
+                    
+                    <!-- Selected Member Header & Star Rating -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-lsc-border pb-6">
+                        <div class="flex items-center space-x-3.5">
+                            <div class="w-12 h-12 rounded-2xl bg-[#161b26] border border-lsc-border flex items-center justify-center text-amber-400 font-bold shadow-inner">
+                                <i class="fa-solid fa-user-shield text-xl"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2.5 flex-wrap">
+                                    <h3 id="selected-member-name" class="font-heading text-2xl font-bold text-white tracking-wide">Clara Fox</h3>
+                                    <span id="selected-member-badge" class="px-3 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-widest bg-slate-200/10 text-slate-200 border border-slate-400/30">SZEF</span>
+                                </div>
+                                <p class="text-xs text-slate-400 mt-0.5">Karta oceny pracowniczej</p>
+                            </div>
                         </div>
-                        <h3 class="font-heading text-xl font-bold text-white">Zasady Działania</h3>
+
+                        <!-- Star Rating Selector -->
+                        <div class="flex items-center space-x-2 bg-[#080a0f] px-4 py-3 rounded-2xl border border-lsc-border self-start sm:self-auto">
+                            <span class="text-xs text-slate-400 mr-1 font-bold uppercase tracking-wider">Ocena:</span>
+                            <div class="flex space-x-1.5" id="single-stars-container">
+                                <!-- Stars rendered by JS -->
+                            </div>
+                            <input type="hidden" id="single-rating" value="5">
+                        </div>
                     </div>
-                    <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
-                            <span><strong>100% Anonimowości:</strong> System nie rejestruje Twojego IP ani danych.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
-                            <span><strong>Oceny pojedyncze:</strong> Możesz ocenić jedną wybraną osobę bez wypełniania reszty.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
-                            <span><strong>Konstruktywizm:</strong> Opieraj opinie i pomysły na realnej współpracy.</span>
-                        </li>
-                    </ul>
+
+                    <!-- Cooldown Warning for Selected Member -->
+                    <div id="member-cooldown-alert" class="hidden bg-amber-950/50 border border-amber-500/40 text-amber-200 p-4 rounded-2xl flex items-center space-x-3.5">
+                        <i class="fa-solid fa-hourglass-half text-amber-400 text-xl"></i>
+                        <p id="member-cooldown-text" class="text-xs text-amber-300">Oceniłeś już tę osobę. Kolejną opinię dla niej będziesz mógł wystawić za kilka godzin.</p>
+                    </div>
+
+                    <!-- Pros & Cons Inputs -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Co ta osoba robi dobrze? (Zalety) *
+                            </label>
+                            <textarea id="single-pros" rows="4" placeholder="Opisz mocne strony, zaangażowanie lub podejście do pracowników (min. 3 znaki)..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none" required minlength="3"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-amber-400"></span> Co można by poprawić? (Uwagi)
+                            </label>
+                            <textarea id="single-cons" rows="4" placeholder="Wpisz ewentualne konstruktywne uwagi lub sugestie (opcjonalnie)..." class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button type="submit" id="review-submit-btn" class="w-full py-4 px-8 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-heading font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-amber-500/20 hover:shadow-amber-500/40 hover:-translate-y-0.5 flex items-center justify-center space-x-3 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane text-lg"></i>
+                            <span>Wyślij ocenę tej osoby na Discord</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- TAB 2: REPORT / PROPOSAL WITH MESSAGE STYLE SELECTOR -->
+            <section id="section-proposal" class="hidden fade-in space-y-8">
+                <form id="proposal-form" onsubmit="submitProposal(event)" class="bg-lsc-card border border-rose-500/30 rounded-3xl p-6 sm:p-8 card-glow space-y-6">
+                    
+                    <div class="flex items-center space-x-3.5 border-b border-lsc-border pb-5">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 font-bold shadow-inner">
+                            <i class="fa-solid fa-bullhorn text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-2xl font-bold text-white tracking-wide">Zgłoszenie Sytuacji lub Propozycja</h3>
+                            <p class="text-xs text-slate-400">Wybierz styl wiadomości i opisz sprawę – Twoje dane z odznaki zostaną dołączone do zgłoszenia.</p>
+                        </div>
+                    </div>
+
+                    <!-- Cooldown Warning for Proposal -->
+                    <div id="proposal-cooldown-alert" class="hidden bg-rose-950/50 border border-rose-500/40 text-rose-200 p-4 rounded-2xl flex items-center space-x-3.5">
+                        <i class="fa-solid fa-hourglass-half text-rose-400 text-xl"></i>
+                        <p id="proposal-cooldown-text" class="text-xs text-rose-300">Wysłałeś już zgłoszenie. Kolejne będziesz mógł wysłać za kilka godzin.</p>
+                    </div>
+
+                    <!-- Style Selector Cards -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Wybierz styl / typ wiadomości na Discord *
+                        </label>
+                        <div id="message-style-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span> Kategoria sprawy
+                            </label>
+                            <select id="proposal-category" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
+                                <option value="Organizacja Pracy i Zasady">Organizacja Pracy i Zasady</option>
+                                <option value="Sytuacja na Warsztacie / Zachowanie">Sytuacja na Warsztacie / Zachowanie</option>
+                                <option value="Tuning, Cennik i Usługi">Tuning, Cennik i Usługi</option>
+                                <option value="Flota, Wyposażenie i Systemy">Flota, Wyposażenie i Systemy</option>
+                                <option value="Inna Sprawa / Uwaga">Inna Sprawa / Uwaga</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span> Krótki temat wiadomości *
+                            </label>
+                            <input type="text" id="proposal-title" placeholder="Np. Zgłoszenie sytuacji z wieczornej zmiany..." required minlength="4" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> Szczegółowy opis *
+                        </label>
+                        <textarea id="proposal-content" rows="5" placeholder="Opisz dokładnie sytuację, pomysł lub problem (min. 10 znaków)..." required minlength="10" class="w-full bg-[#080a0f] border border-lsc-border rounded-2xl p-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500 transition resize-none"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" id="proposal-submit-btn" class="w-full py-4 px-8 bg-gradient-to-r from-rose-600 via-rose-500 to-red-500 hover:from-rose-700 hover:to-red-600 text-white font-heading font-bold text-lg rounded-2xl transition-all duration-300 shadow-xl shadow-rose-500/20 hover:shadow-rose-500/40 hover:-translate-y-0.5 flex items-center justify-center space-x-3 cursor-pointer">
+                            <i class="fa-solid fa-paper-plane text-lg"></i>
+                            <span>Wyślij zgłoszenie na Discord</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Rules & Guidelines Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 mb-6">
+                <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <h3 class="font-heading text-xl font-bold text-white">Zasady Weryfikacji</h3>
+                        </div>
+                        <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Weryfikacja Discord:</strong> Dostęp mają wyłącznie pracownicy obecni na serwerze LSC.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Automatyczna odznaka:</strong> System pobiera Twoją odznakę oraz imię i nazwisko z nicku serwerowego.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+                                <span><strong>Konstruktywizm:</strong> Opieraj opinie i zgłoszenia na faktach i realnej współpracy.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <h3 class="font-heading text-xl font-bold text-white">Zakazy i Konsekwencje</h3>
+                        </div>
+                        <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                                <span><strong>Zakaz spamu:</strong> Wysyłanie pustych lub bezsensownych zgłoszeń.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                                <span><strong>Zakaz fake info:</strong> Celowe pisanie kłamstw i oszczerstw.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
+                                <span><strong>Odpowiedzialność:</strong> Zgłoszenia są podpisane Twoją odznaką – trollowanie skutkuje karami.</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-lsc-card border border-lsc-border rounded-3xl p-6 sm:p-7 card-glow flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center space-x-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
-                        <h3 class="font-heading text-xl font-bold text-white">Zakazy i Konsekwencje</h3>
-                    </div>
-                    <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
-                            <span><strong>Zakaz spamu:</strong> Wysyłanie pustych lub bezsensownych zgłoszeń.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
-                            <span><strong>Zakaz fake info:</strong> Celowe pisanie kłamstw i oszczerstw.</span>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <i class="fa-solid fa-xmark text-rose-400 mt-1"></i>
-                            <span><strong>Trollowanie:</strong> Zgłoszenia dla żartu skutkują karami frakcyjnymi.</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
         </div>
 
     </main>
@@ -340,12 +432,12 @@
                 <span class="font-heading font-bold text-slate-300 tracking-wider text-sm">LOS SANTOS CUSTOMS • OSLO RP</span>
             </div>
             <p class="text-xs text-slate-500 text-center sm:text-right">
-                System Opinii i Propozycji Frakcji. Wszelkie prawa zastrzeżone.
+                System Opinii i Zgłoszeń Frakcji. Wszelkie prawa zastrzeżone.
             </p>
         </div>
     </footer>
 
-    <!-- JavaScript Application Logic & Obfuscated Webhook -->
+    <!-- JavaScript Application Logic & Discord OAuth2 -->
     <script>
         // Zabezpieczenie przed inspekcją kodu i konsolą
         document.addEventListener('contextmenu', event => event.preventDefault());
@@ -360,7 +452,11 @@
             }
         });
 
-        // Zaszyfrowany (obfuskacja) docelowy adres webhooka oraz konfiguracja
+        // Konfiguracja Discord OAuth2 oraz Webhooka
+        const DISCORD_CLIENT_ID = '1529307786670768330';
+        const DISCORD_GUILD_ID = '1100715662583803916';
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
+
         const _lscSys = (function() {
             const _parts = [
                 'https://discord.com',
@@ -377,6 +473,7 @@
 
         const COOLDOWN_HOURS = 12;
 
+        // Lista członków zarządu
         const managementMembers = [
             {
                 id: 'clara-fox',
@@ -429,16 +526,206 @@
             }
         ];
 
+        // Style wiadomości do wyboru przy zgłaszaniu czegoś
+        const messageStyles = [
+            {
+                id: 'proposal',
+                label: 'Propozycja Zmian',
+                desc: 'Pomysł na rozwój LSC',
+                icon: 'fa-lightbulb',
+                emoji: '💡',
+                embedTitle: '💡 Nowa Propozycja Zmian w LSC',
+                embedColor: 16098851, // Amber #f59e0b
+                activeClass: 'border-amber-400 bg-amber-500/10 text-amber-300'
+            },
+            {
+                id: 'incident',
+                label: 'Zgłoszenie Sytuacji',
+                desc: 'Skarga lub incydent',
+                icon: 'fa-triangle-exclamation',
+                emoji: '🚨',
+                embedTitle: '🚨 Zgłoszenie Sytuacji / Incydentu',
+                embedColor: 16007990, // Rose #f43f5e
+                activeClass: 'border-rose-500 bg-rose-500/10 text-rose-300'
+            },
+            {
+                id: 'technical',
+                label: 'Problem / Warsztat',
+                desc: 'Błąd, flota lub sprzęt',
+                icon: 'fa-wrench',
+                emoji: '🔧',
+                embedTitle: '🔧 Zgłoszenie Techniczne / Warsztatowe',
+                embedColor: 3899638, // Blue #3b82f6
+                activeClass: 'border-blue-400 bg-blue-500/10 text-blue-300'
+            },
+            {
+                id: 'praise',
+                label: 'Pochwała / Wyróżnienie',
+                desc: 'Docenienie pracownika',
+                icon: 'fa-award',
+                emoji: '🏆',
+                embedTitle: '🏆 Pochwała / Wyróżnienie w LSC',
+                embedColor: 1096065, // Emerald #10b981
+                activeClass: 'border-emerald-400 bg-emerald-500/10 text-emerald-300'
+            }
+        ];
+
         let selectedMemberId = managementMembers[0].id;
+        let selectedStyleId = messageStyles[0].id;
+        let currentWorker = null; // { id, username, avatarUrl, rawNick, badge, fullName }
 
         document.addEventListener('DOMContentLoaded', () => {
+            initDiscordAuth();
+        });
+
+        // Parsowanie nicku np. "[01] Clara Fox" lub "[07] Xavier Victor Pieniążek"
+        function parseWorkerNick(rawNick) {
+            const cleaned = (rawNick || '').trim();
+            // Szuka wzorca [01] Imię Nazwisko lub 01 | Imię Nazwisko
+            const bracketMatch = cleaned.match(/^\[([^\]]+)\]\s*(.+)$/);
+            if (bracketMatch) {
+                return {
+                    badge: bracketMatch[1].trim(),
+                    fullName: bracketMatch[2].trim()
+                };
+            }
+            const pipeMatch = cleaned.match(/^(\d{1,3})\s*[\|\-\.]\s*(.+)$/);
+            if (pipeMatch) {
+                return {
+                    badge: pipeMatch[1].trim(),
+                    fullName: pipeMatch[2].trim()
+                };
+            }
+            return {
+                badge: 'BRAK',
+                fullName: cleaned || 'Nieznany Pracownik'
+            };
+        }
+
+        function loginWithDiscord() {
+            const scope = encodeURIComponent('identify guilds.members.read');
+            const redirect = encodeURIComponent(REDIRECT_URI);
+            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${redirect}&response_type=token&scope=${scope}`;
+            window.location.href = authUrl;
+        }
+
+        function logoutDiscord() {
+            sessionStorage.removeItem('lsc_discord_token');
+            currentWorker = null;
+            window.location.href = REDIRECT_URI;
+        }
+
+        async function initDiscordAuth() {
+            // Sprawdź czy w URL wrócił access_token po przekierowaniu z Discorda
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const tokenFromHash = hashParams.get('access_token');
+
+            if (tokenFromHash) {
+                sessionStorage.setItem('lsc_discord_token', tokenFromHash);
+                // Wyczyść hash z paska adresu
+                window.history.replaceState(null, null, window.location.pathname);
+            }
+
+            const token = sessionStorage.getItem('lsc_discord_token');
+            if (!token) {
+                showAuthGate();
+                return;
+            }
+
+            // Weryfikacja tokena i pobranie danych z serwera LSC
+            document.getElementById('discord-login-btn').classList.add('hidden');
+            document.getElementById('auth-loading').classList.remove('hidden');
+            document.getElementById('auth-error-box').classList.add('hidden');
+
+            try {
+                // 1. Pobierz podstawowe dane użytkownika Discord
+                const userRes = await fetch('https://discord.com/api/users/@me', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!userRes.ok) throw new Error('Sesja Discord wygasła. Zaloguj się ponownie.');
+                const userData = await userRes.json();
+
+                // 2. Pobierz profil członka na serwerze LSC (nick z odznaką)
+                const memberRes = await fetch(`https://discord.com/api/users/@me/guilds/${DISCORD_GUILD_ID}/member`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (memberRes.status === 404) {
+                    throw new Error('Twoje konto Discord nie znajduje się na serwerze Los Santos Customs!');
+                }
+                if (!memberRes.ok) {
+                    throw new Error('Nie udało się zweryfikować członkostwa na serwerze LSC.');
+                }
+
+                const memberData = await memberRes.json();
+                const rawNick = memberData.nick || userData.global_name || userData.username;
+                const parsed = parseWorkerNick(rawNick);
+
+                const avatarUrl = memberData.avatar
+                    ? `https://cdn.discordapp.com/guilds/${DISCORD_GUILD_ID}/users/${userData.id}/avatars/${memberData.avatar}.png`
+                    : userData.avatar
+                        ? `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`
+                        : 'https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png';
+
+                currentWorker = {
+                    id: userData.id,
+                    username: userData.username,
+                    avatarUrl,
+                    rawNick,
+                    badge: parsed.badge,
+                    fullName: parsed.fullName
+                };
+
+                onAuthSuccess();
+
+            } catch (err) {
+                console.error(err);
+                sessionStorage.removeItem('lsc_discord_token');
+                showAuthGate(err.message);
+            }
+        }
+
+        function showAuthGate(errorMsg = '') {
+            document.getElementById('auth-gate').classList.remove('hidden');
+            document.getElementById('app-content').classList.add('hidden');
+            document.getElementById('auth-loading').classList.add('hidden');
+            document.getElementById('discord-login-btn').classList.remove('hidden');
+
+            if (errorMsg) {
+                document.getElementById('auth-error-text').textContent = errorMsg;
+                document.getElementById('auth-error-box').classList.remove('hidden');
+            }
+        }
+
+        function onAuthSuccess() {
+            document.getElementById('auth-gate').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+
+            // Nagłówek
+            document.getElementById('guest-header-badge').classList.add('hidden');
+            const userBadge = document.getElementById('user-header-badge');
+            userBadge.classList.remove('hidden');
+            userBadge.classList.add('flex');
+
+            document.getElementById('user-avatar').src = currentWorker.avatarUrl;
+            document.getElementById('user-badge-pill').textContent = `[${currentWorker.badge}]`;
+            document.getElementById('user-fullname').textContent = currentWorker.fullName;
+
+            // Karta powitalna
+            document.getElementById('welcome-worker-name').textContent = `[${currentWorker.badge}] ${currentWorker.fullName}`;
+            document.getElementById('card-badge-display').textContent = `#${currentWorker.badge}`;
+            document.getElementById('card-name-display').textContent = currentWorker.fullName;
+            document.getElementById('card-discord-tag').textContent = `@${currentWorker.username}`;
+
+            // Inicjalizacja formularzy
             renderMemberSelector();
             selectMember(selectedMemberId);
             renderSingleStars(5);
+            renderMessageStyles();
             checkProposalCooldown();
-        });
+        }
 
-        // Przełączanie zakładek (Ocena Zarządu / Propozycja)
+        // Przełączanie zakładek
         function switchTab(tab) {
             const reviewSec = document.getElementById('section-review');
             const proposalSec = document.getElementById('section-proposal');
@@ -470,7 +757,7 @@
 
             managementMembers.forEach(member => {
                 const isSelected = member.id === selectedMemberId;
-                const isOnCooldown = getRemainingCooldown(`lsc_review_${member.id}`) > 0;
+                const isOnCooldown = getRemainingCooldown(`lsc_review_${currentWorker?.id}_${member.id}`) > 0;
 
                 const btn = document.createElement('button');
                 btn.type = 'button';
@@ -501,7 +788,6 @@
             });
         }
 
-        // Wybór konkretnej osoby
         function selectMember(memberId) {
             selectedMemberId = memberId;
             const member = managementMembers.find(m => m.id === memberId);
@@ -516,7 +802,36 @@
             checkMemberCooldown(memberId);
         }
 
-        // Gwiazdki dla wybranej osoby
+        // Renderowanie kart stylu wiadomości w zakładce 2
+        function renderMessageStyles() {
+            const grid = document.getElementById('message-style-grid');
+            grid.innerHTML = '';
+
+            messageStyles.forEach(style => {
+                const isSelected = style.id === selectedStyleId;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => {
+                    selectedStyleId = style.id;
+                    renderMessageStyles();
+                };
+                btn.className = `text-left p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                    isSelected
+                        ? `${style.activeClass} shadow-md`
+                        : 'bg-[#080a0f] border-lsc-border text-slate-400 hover:border-slate-600'
+                }`;
+                btn.innerHTML = `
+                    <div class="flex items-center justify-between mb-1.5">
+                        <i class="fa-solid ${style.icon} text-base"></i>
+                        ${isSelected ? '<i class="fa-solid fa-circle-check text-xs"></i>' : ''}
+                    </div>
+                    <div class="font-heading font-bold text-white text-xs sm:text-sm">${style.label}</div>
+                    <div class="text-[11px] opacity-80 mt-0.5">${style.desc}</div>
+                `;
+                grid.appendChild(btn);
+            });
+        }
+
         function renderSingleStars(rating) {
             const container = document.getElementById('single-stars-container');
             container.innerHTML = '';
@@ -544,7 +859,7 @@
         }
 
         function checkMemberCooldown(memberId) {
-            const remaining = getRemainingCooldown(`lsc_review_${memberId}`);
+            const remaining = getRemainingCooldown(`lsc_review_${currentWorker?.id}_${memberId}`);
             const alertBox = document.getElementById('member-cooldown-alert');
             const submitBtn = document.getElementById('review-submit-btn');
 
@@ -563,21 +878,21 @@
         }
 
         function checkProposalCooldown() {
-            const remaining = getRemainingCooldown('lsc_proposal_last_sent');
+            const remaining = getRemainingCooldown(`lsc_proposal_${currentWorker?.id}`);
             const alertBox = document.getElementById('proposal-cooldown-alert');
             const submitBtn = document.getElementById('proposal-submit-btn');
 
             if (remaining > 0) {
                 alertBox.classList.remove('hidden');
-                document.getElementById('proposal-cooldown-text').textContent = `Wysłałeś już propozycję. Kolejną będziesz mógł wysłać za około ${remaining} godz.`;
+                document.getElementById('proposal-cooldown-text').textContent = `Wysłałeś już zgłoszenie. Kolejne będziesz mógł wysłać za około ${remaining} godz.`;
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Następna propozycja za ok. ${remaining} godz.</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-lock"></i> <span>Następne zgłoszenie za ok. ${remaining} godz.</span>`;
             } else {
                 alertBox.classList.add('hidden');
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-lg"></i> <span>Wyślij anonimową propozycję na Discord</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-lg"></i> <span>Wyślij zgłoszenie na Discord</span>`;
             }
         }
 
@@ -593,9 +908,10 @@
             }, 6000);
         }
 
-        // Wysyłanie pojedynczej oceny zarządu
+        // Wysyłanie indywidualnej oceny zarządu
         async function submitSingleReview(event) {
             event.preventDefault();
+            if (!currentWorker) return;
 
             const member = managementMembers.find(m => m.id === selectedMemberId);
             if (!member) return;
@@ -616,12 +932,21 @@
                 avatar_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png",
                 content: _lscSys.getRole(),
                 embeds: [{
-                    title: `⭐ Nowa Indywidualna Ocena Zarządu`,
-                    description: `Pracownik przesłał nową anonimową opinię dotyczącą członka zarządu:`,
+                    title: `⭐ Nowa Ocena Członka Zarządu`,
+                    description: `Pracownik wystawił opinię dotyczącą pracy osoby z zarządu:`,
                     color: 16098851, // Amber gold (#f59e0b)
+                    author: {
+                        name: `[${currentWorker.badge}] ${currentWorker.fullName}`,
+                        icon_url: currentWorker.avatarUrl
+                    },
                     fields: [
                         {
-                            name: `👤 Oceniana osoba`,
+                            name: `🪪 Kto zgłasza (Pracownik)`,
+                            value: `**[${currentWorker.badge}] ${currentWorker.fullName}** (<@${currentWorker.id}>)`,
+                            inline: false
+                        },
+                        {
+                            name: `👤 Oceniana osoba z zarządu`,
                             value: `**${member.name}** \`[${member.role}]\``,
                             inline: true
                         },
@@ -642,7 +967,7 @@
                         }
                     ],
                     footer: {
-                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Ocena Zarządu",
+                        text: `Los Santos Customs • Oslo RP | Odznaka #${currentWorker.badge}`,
                         icon_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png"
                     },
                     timestamp: new Date().toISOString()
@@ -669,7 +994,7 @@
                 return;
             }
 
-            localStorage.setItem(`lsc_review_${member.id}`, Date.now().toString());
+            localStorage.setItem(`lsc_review_${currentWorker.id}_${member.id}`, Date.now().toString());
             document.getElementById('single-pros').value = '';
             document.getElementById('single-cons').value = '';
             document.getElementById('single-rating').value = '5';
@@ -679,50 +1004,66 @@
             checkMemberCooldown(member.id);
             showSuccess(
                 `Ocena dla ${member.name} została wysłana!`,
-                'Twoja anonimowa opinia trafiła na kanał Discord. Możesz teraz ocenić kolejną osobę z listy.'
+                `Twoja opinia jako [${currentWorker.badge}] ${currentWorker.fullName} trafiła na kanał Discord.`
             );
         }
 
-        // Wysyłanie anonimowej propozycji
+        // Wysyłanie zgłoszenia / propozycji z wybranym stylem wiadomości
         async function submitProposal(event) {
             event.preventDefault();
+            if (!currentWorker) return;
 
+            const styleObj = messageStyles.find(s => s.id === selectedStyleId) || messageStyles[0];
             const category = document.getElementById('proposal-category').value;
             const title = document.getElementById('proposal-title').value.trim();
             const content = document.getElementById('proposal-content').value.trim();
 
             if (title.length < 4 || content.length < 10) {
-                alert('Uzupełnij poprawnie tytuł oraz szczegółowy opis propozycji.');
+                alert('Uzupełnij poprawnie temat oraz szczegółowy opis zgłoszenia.');
                 return;
             }
 
             const payload = {
-                username: "LSC • Anonimowe Propozycje",
+                username: "LSC • Panel Zgłoszeń",
                 avatar_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png",
                 content: _lscSys.getRole(),
                 embeds: [{
-                    title: `🔥 Nowa Anonimowa Propozycja w LSC`,
-                    description: `Pracownik przesłał nową propozycję zmian lub ulepszeń we frakcji:`,
-                    color: 16007990, // Rose red (#f43f5e)
+                    title: styleObj.embedTitle,
+                    description: `Pracownik przesłał nowe zgłoszenie w panelu LSC:`,
+                    color: styleObj.embedColor,
+                    author: {
+                        name: `[${currentWorker.badge}] ${currentWorker.fullName}`,
+                        icon_url: currentWorker.avatarUrl
+                    },
                     fields: [
+                        {
+                            name: `🪪 Kto zgłasza (Pracownik)`,
+                            value: `**[${currentWorker.badge}] ${currentWorker.fullName}** (<@${currentWorker.id}>)`,
+                            inline: false
+                        },
+                        {
+                            name: `🎨 Styl wiadomości`,
+                            value: `${styleObj.emoji} **${styleObj.label}**`,
+                            inline: true
+                        },
                         {
                             name: `📂 Kategoria`,
                             value: `\`${category}\``,
                             inline: true
                         },
                         {
-                            name: `📌 Temat propozycji`,
+                            name: `📌 Temat`,
                             value: `**${title}**`,
-                            inline: true
+                            inline: false
                         },
                         {
-                            name: `📝 Szczegółowy opis pomysłu`,
+                            name: `📝 Szczegółowy opis`,
                             value: content,
                             inline: false
                         }
                     ],
                     footer: {
-                        text: "Los Santos Customs • Oslo RP | 100% Anonimowa Propozycja",
+                        text: `Los Santos Customs • Oslo RP | Odznaka #${currentWorker.badge}`,
                         icon_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png"
                     },
                     timestamp: new Date().toISOString()
@@ -731,7 +1072,7 @@
 
             const submitBtn = document.getElementById('proposal-submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Wysyłanie propozycji...</span>`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Wysyłanie zgłoszenia...</span>`;
 
             try {
                 const response = await fetch(_lscSys.getUrl(), {
@@ -743,20 +1084,20 @@
                 if (!response.ok) throw new Error('Błąd Discord Webhook');
             } catch (err) {
                 console.error(err);
-                alert('Wystąpił problem podczas wysyłania propozycji na Discord. Spróbuj ponownie.');
+                alert('Wystąpił problem podczas wysyłania zgłoszenia na Discord. Spróbuj ponownie.');
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-lg"></i> <span>Wyślij anonimową propozycję na Discord</span>`;
+                submitBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-lg"></i> <span>Wyślij zgłoszenie na Discord</span>`;
                 return;
             }
 
-            localStorage.setItem('lsc_proposal_last_sent', Date.now().toString());
+            localStorage.setItem(`lsc_proposal_${currentWorker.id}`, Date.now().toString());
             document.getElementById('proposal-title').value = '';
             document.getElementById('proposal-content').value = '';
 
             checkProposalCooldown();
             showSuccess(
-                'Anonimowa propozycja została wysłana!',
-                'Twój pomysł na ulepszenie Los Santos Customs trafił bezpiecznie na Discorda.'
+                `Zgłoszenie (${styleObj.label}) zostało wysłane!`,
+                `Twoja wiadomość jako [${currentWorker.badge}] ${currentWorker.fullName} trafiła na kanał Discord.`
             );
         }
     </script>
