@@ -256,7 +256,7 @@
                 </button>
             </div>
 
-            <!-- TAB 1: INDIVIDUAL MANAGEMENT EVALUATION -->
+            <!-- TAB 1: INDIVIDUAL MANAGEMENT EVALUATION (INDIVIDUAL PINGS / ROLE PING FOR RICO & FRAN) -->
             <div id="view-review" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
                 <!-- Left Column: Selection & Form (7 cols) -->
@@ -349,7 +349,7 @@
                             </div>
                         </div>
 
-                        <div class="text-xs text-indigo-300 bg-discord/20 inline-block px-1.5 py-0.5 rounded mb-2 font-medium">@Zarząd LSC</div>
+                        <div id="prev-rev-ping" class="text-xs text-indigo-300 bg-discord/20 inline-block px-1.5 py-0.5 rounded mb-2 font-medium">@Clara Fox</div>
 
                         <!-- Embed Box -->
                         <div id="preview-review-embed" class="bg-discord-embed rounded-lg p-3.5 border-l-4 border-amber-500 space-y-2.5">
@@ -387,7 +387,7 @@
                 </div>
             </div>
 
-            <!-- TAB 2: REPORT / PROPOSAL WITH MESSAGE STYLES (NO COOLDOWN) -->
+            <!-- TAB 2: REPORT / PROPOSAL WITH MESSAGE STYLES (WITH ROLE PING & NO COOLDOWN) -->
             <div id="view-report" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
                 
                 <!-- Left Column: Style Picker & Form (7 cols) -->
@@ -531,12 +531,14 @@
             return { url: () => p.join(''), role: () => r.join('') };
         })();
 
-        // Kadra Zarządu
+        // Kadra Zarządu z indywidualnymi pingami (dla Rico i Frana zostaje ping roli zarządu)
         const managementStaff = [
             {
                 id: 'clara-fox',
                 name: 'Clara Fox',
                 role: 'SZEF',
+                ping: '<@760940386104901694>',
+                previewPing: '@Clara Fox',
                 accentHex: '#e2e8f0',
                 embedColor: 14869218,
                 pillStyle: 'bg-slate-200/15 text-slate-200 border border-slate-400/30',
@@ -546,6 +548,8 @@
                 id: 'gervonta-cervantes',
                 name: 'Gervonta Cervantes',
                 role: 'ASYSTENT',
+                ping: '<@598879665746083841>',
+                previewPing: '@Gervonta Cervantes',
                 accentHex: '#34d399',
                 embedColor: 3462041,
                 pillStyle: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
@@ -555,6 +559,8 @@
                 id: 'iso-pieniazek',
                 name: 'Iso Pieniążek',
                 role: 'ASYSTENT',
+                ping: '<@806955298039791678>',
+                previewPing: '@Iso Pieniążek',
                 accentHex: '#34d399',
                 embedColor: 3462041,
                 pillStyle: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
@@ -564,6 +570,8 @@
                 id: 'liam-cash',
                 name: 'Liam Cash',
                 role: 'ASYSTENT',
+                ping: '<@839773468034727937>',
+                previewPing: '@Liam Cash',
                 accentHex: '#34d399',
                 embedColor: 3462041,
                 pillStyle: 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30',
@@ -573,6 +581,8 @@
                 id: 'xavier-victor-pieniazek',
                 name: 'Xavier Victor Pieniążek',
                 role: 'KIEROWNIK',
+                ping: '<@1214633024063545458>',
+                previewPing: '@Xavier Victor Pieniążek',
                 accentHex: '#60a5fa',
                 embedColor: 6333946,
                 pillStyle: 'bg-blue-500/15 text-blue-300 border border-blue-500/30',
@@ -582,6 +592,8 @@
                 id: 'adam-day',
                 name: 'Adam Day',
                 role: 'KIEROWNIK',
+                ping: '<@813101897225338910>',
+                previewPing: '@Adam Day',
                 accentHex: '#60a5fa',
                 embedColor: 6333946,
                 pillStyle: 'bg-blue-500/15 text-blue-300 border border-blue-500/30',
@@ -591,6 +603,8 @@
                 id: 'rico-valdez-clark',
                 name: 'Rico Valdez Clark',
                 role: 'INŻYNIER',
+                ping: null, // użyje ping roli zarządu
+                previewPing: '@Zarząd LSC',
                 accentHex: '#a60759',
                 embedColor: 10880857, // #a60759
                 pillStyle: 'bg-[#a60759]/25 text-[#ff70b8] border border-[#a60759]/60',
@@ -600,6 +614,8 @@
                 id: 'fran-gomez-lacruz',
                 name: '[14] Fran Gomez Lacruz',
                 role: 'TRIAL INŻYNIER',
+                ping: null, // użyje ping roli zarządu
+                previewPing: '@Zarząd LSC',
                 accentHex: '#ff7700',
                 embedColor: 16742144, // #ff7700
                 pillStyle: 'bg-[#ff7700]/20 text-[#ffa352] border border-[#ff7700]/60',
@@ -907,6 +923,7 @@
             const cons = document.getElementById('input-cons').value.trim() || 'Brak uwag.';
             const bar = '🟨'.repeat(rating) + '⬛'.repeat(5 - rating);
 
+            document.getElementById('prev-rev-ping').textContent = m.previewPing;
             document.getElementById('prev-rev-author').textContent = `[${workerSession.badge}] ${workerSession.fullName}`;
             document.getElementById('prev-rev-sender').textContent = `[${workerSession.badge}] ${workerSession.fullName}`;
             document.getElementById('prev-rev-target').textContent = `${m.name} [${m.role}]`;
@@ -971,7 +988,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // KARTA OCENY DISCORD
+        // KARTA OCENY DISCORD (INDYWIDUALNY PING LUB PING ZARZĄDU DLA RICO I FRANA)
         async function handleReviewSubmit(e) {
             e.preventDefault();
             if (!workerSession) return;
@@ -984,11 +1001,12 @@
             if (pros.length < 3) return;
 
             const bar = '🟨'.repeat(rating) + '⬛'.repeat(5 - rating);
+            const targetPing = m.ping ? m.ping : _webhookSys.role();
 
             const payload = {
                 username: "LSC • Kadry i Opinie",
                 avatar_url: "https://keshy-devs.github.io/Opinie-zarzad-LSC/logo.png",
-                content: _webhookSys.role(),
+                content: targetPing,
                 embeds: [{
                     title: `📋 KARTA OCENY PRACOWNICZEJ`,
                     color: m.embedColor,
@@ -1054,7 +1072,7 @@
             showToast(`Wysłano ocenę dla ${m.name}!`, `Karta podpisana jako [${workerSession.badge}] ${workerSession.fullName} trafiła na Discord.`);
         }
 
-        // RAPORT / PROPOZYCJA DISCORD (BEZ COOLDOWNU)
+        // RAPORT / PROPOZYCJA DISCORD (Z PINGIEM ZARZĄDU I BEZ COOLDOWNU)
         async function handleReportSubmit(e) {
             e.preventDefault();
             if (!workerSession) return;
